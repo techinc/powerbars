@@ -15,7 +15,10 @@ def powerbar_i(bar, port):
                 state = False
             else:
                 return 'Go away\n'
+
+            # XXX: Check if bar is valid and return 404 if not
             bars[bar].sockets[port].set_state(state)
+
             return "Bar: %d, Port %d\n" % (bar, port)
         return 'Go away\n'
 
@@ -34,4 +37,4 @@ def powerbar_p(bar, port):
         return "Bar: %d, Port %d\n" % (bar, port)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')

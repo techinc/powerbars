@@ -5,11 +5,11 @@ def write_read(s, m):
     s.write(m)
     s.timeout = 10
     l = len(m) + len('RPC-28A>\r')
-    print 'Reading:', l
+    #print 'Reading:', l
     t1 = time.time()
     f = s.read(l)
-    print time.time() - t1
-    print f
+    #print time.time() - t1
+    #print f
     return f
 
 
