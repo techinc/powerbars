@@ -23,7 +23,7 @@ def threshold_set_state(socket, state):
         socket.count += 1
     else:
         socket.count -= 1
-        if socket.count < 0:
+        if socket.count <= 0:
             socket.set_state(False)
             socket.count = 0
 
