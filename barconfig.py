@@ -6,17 +6,26 @@ from bar import PowerBar, write_read
 
 bars = []
 
-FIRST_BAR = PowerBar('/dev/ttyUSB0', 20, 'My Little Powerbar (MLP)')
+FIRST_BAR = PowerBar('/dev/ttyS0', 20, 'My Little Powerbar (MLP)')
 
-bars.append([
+bars += [
     FIRST_BAR,
-])
+]
 
-LIGHT_TABLE                     = FIRST_BAR[1]
-LIGHT_SOLDERING                 = FIRST_BAR[2]
+LIGHT_SOLDER			= FIRST_BAR[3]
+LIGHT_BAR			= FIRST_BAR[4]
+LIGHT_TABLE                     = FIRST_BAR[5]
+LIGHT_3D			= FIRST_BAR[6]
+
+PRINTER				= FIRST_BAR[18]
+MONITOR_AV_1			= FIRST_BAR[19]
+MONITOR_AV_2			= FIRST_BAR[20]
+#LIGHT_TABLE                     = FIRST_BAR[18]
 
 groups = {
-    'lights' : [LIGHT_TABLE, LIGHT_SOLDERING],
+    'lights' : [LIGHT_SOLDER, LIGHT_BAR, LIGHT_TABLE],
+    'av' : [MONITOR_AV_1, MONITOR_AV_2],
+    'printer' : [PRINTER],
 }
 
 GROUPS_LIGHT = groups['lights']

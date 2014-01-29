@@ -1,6 +1,6 @@
 import time
 
-VIRTUAL = True
+VIRTUAL = False
 
 if not VIRTUAL:
     from serial import Serial
@@ -17,11 +17,8 @@ def write_read(s, m):
     s.write(m)
     s.timeout = 10
     l = len(m) + len('RPC-28A>\r')
-    #print 'Reading:', l
     t1 = time.time()
     f = s.read(l)
-    #print time.time() - t1
-    #print f
     return f
 
 
@@ -65,6 +62,7 @@ class PowerSocket(object):
 
     def set_state(self, state):
         s = 'On' if state else 'Off'
+	print 'Setting', self.num, 'to', s
         m = '%s %d\r\n' % (s, self.num)
         write_read(self.bar.s, m)
 

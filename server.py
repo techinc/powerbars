@@ -1,5 +1,6 @@
 from flask import Flask, request, abort
 app = Flask(__name__)
+app.debug=True
 
 from barconfig import bars, groups, prefixes
 
@@ -34,9 +35,7 @@ def powerbar_g(group):
     else:
         state = get_state(request)
 
-        print groups[group]
         for socket in groups[group]:
-            print socket, state
             socket.set_state(state)
 
         return "Group: %s\n" % group
@@ -49,10 +48,8 @@ def powerbar_p(prefix):
     else:
         state = get_state(request)
 
-        print prefixes[prefix]
         for group in prefixes[prefix]:
             for socket in group:
-                print socket, state
                 socket.set_state(state)
 
         return "Prefix: %s\n" % prefix
