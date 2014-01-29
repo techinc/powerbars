@@ -30,16 +30,35 @@ access to all components) will follow.
 
 == API ==
 
-export HOST=10.0.20.30
-export PORT=5000
+export MLP_HOST=10.0.20.30
+export MLP_PORT=5000
 
-for i in $(seq 0 19) ; do curl -d state=On http://$HOST:$PORT/0/$i ; done
+for i in $(seq 0 19) ; do curl -d state=On http://$MLP_HOST:$MLP_PORT/0/$i ; done
 
-Extra POST var, kill=graceful or force
+== Examples ==
+
+Currently supported "Groups":
+- 'lights' (Table, 3D, BAR, Solder)
+- 'table', '3d', 'bar', 'solder' (Individual ones)
+- 'printer' (Printer)
+- 'av' (AV Monitors)
+
+Note that if multiple groups are 'On', you need to turn all of them off for the
+light/bar to go off.
 
 Current examples:
 
     # Off
     curl -d state=On http://$HOST:$PORT/group/lights
+
     # On
     curl -d state=Off http://$HOST:$PORT/group/lights
+
+Turn all lights off:
+
+    for i in "lights" "3d" "table" "solder" "bar"; do curl -d state=Off http://$MLP_HOST:$MLP_POST/group/$i; done;
+
+== TODO / Braindump ==
+
+Extra POST var, kill=graceful or force
+
