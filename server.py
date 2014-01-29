@@ -13,8 +13,7 @@ def get_state(request):
             return True
         elif request.form['state'] == 'Off':
             return False
-        else:
-            raise InputException('')
+    raise InputException('')
 
 def threshold_set_state(socket, state):
     if state:
