@@ -53,7 +53,7 @@ class PowerSocket(object):
         self.num = num + 1
         self.name = 'Socket %d' % self.num if not name else name
 
-        self.count = 0
+        self.refcount = []
 
     def __str__(self):
         return self.name

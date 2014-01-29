@@ -15,18 +15,24 @@ def get_state(request):
             return False
     raise InputException('')
 
-def threshold_set_state(socket, state):
+def group_set_state(group, socket, state):
     if state:
-        if socket.count == 0:
-            socket.set_state(True)
-        socket.count += 1
+        if group not in socket.refcount:
+            socket.refcount.append(group)
+        socket.set_state(state)
     else:
-        socket.count -= 1
-        if socket.count <= 0:
-            socket.set_state(False)
-            socket.count = 0
+        if group in socket.refcount:
+            socket.refcount.remove(group)
+        socket.set_state(state)
+
+
 
 def flip_state(state_dict, key, state):
+    if state_dict[key] == None:
+        state_dict[key] = state
+        return True
+
+    # TODO: Add None
     if state_dict[key]:
         if state:
             return True
@@ -39,13 +45,13 @@ def flip_state(state_dict, key, state):
             return True
         else:
             return True
-
+    return False
 
 
 def print_state():
     for bar in bars:
         for socket in bar.sockets:
-            print socket.num, 'is at count:', socket.count
+            print socket.num, 'is at count:', socket.refcount
 
     for k, v in groups_state.iteritems():
         print k, v
@@ -73,8 +79,7 @@ def powerbar_g(group):
 
     if flip_state(groups_state, group, state):
         for socket in groups[group]:
-            threshold_set_state(socket, state)
-            #socket.set_state(state)
+            group_set_state(group, socket, state)
 
         print_state()
 

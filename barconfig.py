@@ -30,7 +30,7 @@ groups = {
 
 groups_state = {}
 for x in groups.iterkeys():
-    groups_state[x] = False
+    groups_state[x] = None
 
 GROUPS_LIGHT = groups['lights']
 
