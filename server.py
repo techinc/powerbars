@@ -2,7 +2,7 @@ from flask import Flask, request, abort
 app = Flask(__name__)
 app.debug=True
 
-from barconfig import bars, groups, prefixes
+from barconfig import bars, groups, groups_state #,prefixes
 
 class InputException(Exception):
     pass
@@ -18,18 +18,38 @@ def get_state(request):
 
 def threshold_set_state(socket, state):
     if state:
-        if socket.num == 0:
+        if socket.count == 0:
             socket.set_state(True)
-        socket.num += 1
+        socket.count += 1
     else:
-        socket.num -= 1
-        if socket.num == 0:
-            socket.state_state(False)
+        socket.count -= 1
+        if socket.count < 0:
+            socket.set_state(False)
+            socket.count = 0
+
+def flip_state(state_dict, key, state):
+    if state_dict[key]:
+        if state:
+            return True
+        else:
+            state_dict[key] = False
+            return True
+    else:
+        if state:
+            state_dict[key] = True
+            return True
+        else:
+            return True
+
+
 
 def print_state():
     for bar in bars:
         for socket in bar.sockets:
             print socket.num, 'is at count:', socket.count
+
+    for k, v in groups_state.iteritems():
+        print k, v
 
 @app.route("/<int:bar>/<int:port>", methods=['GET', 'POST'])
 def powerbar_i(bar, port):
@@ -51,6 +71,8 @@ def powerbar_g(group):
     else:
         state = get_state(request)
 
+
+    if flip_state(groups_state, group, state):
         for socket in groups[group]:
             threshold_set_state(socket, state)
             #socket.set_state(state)
@@ -60,22 +82,21 @@ def powerbar_g(group):
         return "Group: %s\n" % group
 
 
-@app.route("/prefix/<prefix>", methods=['GET', 'POST'])
-def powerbar_p(prefix):
-    if request.method == 'GET':
-        pass
-    else:
-        state = get_state(request)
-
-        for group in prefixes[prefix]:
-            for socket in group:
-                threshold_set_state(socket, state)
-                #socket.set_state(state)
-
-        print_state()
-
-        return "Prefix: %s\n" % prefix
+#@app.route("/prefix/<prefix>", methods=['GET', 'POST'])
+#def powerbar_p(prefix):
+#    if request.method == 'GET':
+#        pass
+#    else:
+#        state = get_state(request)
+#
+#        for group in prefixes[prefix]:
+#            for socket in group:
+#                threshold_set_state(socket, state)
+#                #socket.set_state(state)
+#
+#        print_state()
+#
+#        return "Prefix: %s\n" % prefix
 
 if __name__ == "__main__":
-    print_state()
     app.run(host='0.0.0.0')
