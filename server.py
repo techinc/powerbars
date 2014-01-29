@@ -16,8 +16,24 @@ def get_state(request):
         else:
             raise InputException('')
 
+def threshold_set_state(socket, state):
+    if state:
+        if socket.num == 0:
+            socket.set_state(True)
+        socket.num += 1
+    else:
+        socket.num -= 1
+        if socket.num == 0:
+            socket.state_state(False)
+
+def print_state():
+    for bar in bars:
+        for socket in bar.sockets:
+            print socket.num, 'is at count:', socket.count
+
 @app.route("/<int:bar>/<int:port>", methods=['GET', 'POST'])
 def powerbar_i(bar, port):
+    # TODO: Disable this in general
     if request.method == 'GET':
         return "Bar: %d, Port %d\n" % (bar, port)
     else:
@@ -36,7 +52,10 @@ def powerbar_g(group):
         state = get_state(request)
 
         for socket in groups[group]:
-            socket.set_state(state)
+            threshold_set_state(socket, state)
+            #socket.set_state(state)
+
+        print_state()
 
         return "Group: %s\n" % group
 
@@ -50,9 +69,13 @@ def powerbar_p(prefix):
 
         for group in prefixes[prefix]:
             for socket in group:
-                socket.set_state(state)
+                threshold_set_state(socket, state)
+                #socket.set_state(state)
+
+        print_state()
 
         return "Prefix: %s\n" % prefix
 
 if __name__ == "__main__":
+    print_state()
     app.run(host='0.0.0.0')

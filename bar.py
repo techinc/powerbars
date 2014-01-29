@@ -22,7 +22,6 @@ def write_read(s, m):
     return f
 
 
-
 class PowerBar(object):
     def __init__(self, path, sn, name):
         s = Serial(port=path, baudrate=9600)
@@ -54,6 +53,10 @@ class PowerSocket(object):
         self.num = num + 1
         self.name = 'Socket %d' % self.num if not name else name
 
+        self.count = 1
+        # Default = On
+        self.set_state(True)
+
     def __str__(self):
         return self.name
 
@@ -62,7 +65,7 @@ class PowerSocket(object):
 
     def set_state(self, state):
         s = 'On' if state else 'Off'
-	print 'Setting', self.num, 'to', s
+        print 'Setting', self.num, 'to', s
         m = '%s %d\r\n' % (s, self.num)
         write_read(self.bar.s, m)
 
