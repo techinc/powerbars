@@ -26,7 +26,6 @@ def write_read(s, m):
 
 
 
-
 class PowerBar(object):
     def __init__(self, path, sn, name):
         s = Serial(port=path, baudrate=9600)
