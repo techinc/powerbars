@@ -23,7 +23,8 @@ def group_set_state(group, socket, state):
     else:
         if group in socket.refcount:
             socket.refcount.remove(group)
-        socket.set_state(state)
+        if len(socket.refcount) == 0:
+            socket.set_state(state)
 
 
 

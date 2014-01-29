@@ -23,6 +23,9 @@ MONITOR_AV_2			= FIRST_BAR[20]
 
 groups = {
     'lights' : [LIGHT_SOLDER, LIGHT_BAR, LIGHT_TABLE, LIGHT_3D],
+    'solder' : [LIGHT_SOLDER], # testing
+    'bar' : [LIGHT_BAR], # testing
+    'solderbar' : [LIGHT_SOLDER, LIGHT_BAR], # testing
     'av' : [MONITOR_AV_1, MONITOR_AV_2],
     'printer' : [PRINTER],
 }
