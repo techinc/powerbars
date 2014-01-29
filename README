@@ -34,3 +34,12 @@ export HOST=10.0.20.30
 export PORT=5000
 
 for i in $(seq 0 19) ; do curl -d state=On http://$HOST:$PORT/0/$i ; done
+
+Extra POST var, kill=graceful or force
+
+Current examples:
+
+    # Off
+    curl -d state=On http://$HOST:$PORT/group/lights
+    # On
+    curl -d state=Off http://$HOST:$PORT/group/lights
