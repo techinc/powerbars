@@ -22,7 +22,7 @@ MONITOR_AV_1			= FIRST_BAR[19]
 MONITOR_AV_2			= FIRST_BAR[20]
 
 groups = {
-    'lights' : [LIGHT_SOLDER, LIGHT_BAR, LIGHT_TABLE],
+    'lights' : [LIGHT_SOLDER, LIGHT_BAR, LIGHT_TABLE, LIGHT_3D],
     'av' : [MONITOR_AV_1, MONITOR_AV_2],
     'printer' : [PRINTER],
 }
