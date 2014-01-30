@@ -56,7 +56,7 @@ Current examples:
 
 Turn all lights off:
 
-    for i in "lights" "3d" "table" "solder" "bar"; do curl -d state=Off http://$MLP_HOST:$MLP_POST/group/$i; done;
+    for i in "lights" "3d" "table" "solder" "bar"; do curl -d state=Off http://$MLP_HOST:$MLP_PORT/group/$i; done;
 
 == TODO / Braindump ==
 
