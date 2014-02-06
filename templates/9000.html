@@ -26,19 +26,19 @@ form:last-child fieldset { margin-bottom: 0; }
 
             <iframe name="status" width="216" height="36"></iframe>
                 <fieldset><legend>Lights</legend>
-                    <form method="POST" action="http://10.0.20.30:5000/prefix/lightsoff" target="status">
+                    <form method="POST" action="http://10.0.20.30:5000/preset/lightsoff" target="status">
                     <input class="button small alert" type="submit" name="state" value="Off">
                     </form>
-                    <form method="POST" action="http://10.0.20.30:5000/prefix/lightson" target="status">
+                    <form method="POST" action="http://10.0.20.30:5000/preset/lightson" target="status">
                     <input class="button small" type="submit" name="state" value="On">
                     </form>
                 </fieldset>
 
             <fieldset><legend>ALL</legend>
-                    <form method="POST" action="http://10.0.20.30:5000/prefix/alloff" target="status">
+                    <form method="POST" action="http://10.0.20.30:5000/preset/alloff" target="status">
                     <input class="button small alert" type="submit" name="state" value="Off">
                     </form>
-                    <form method="POST" action="http://10.0.20.30:5000/prefix/allon" target="status">
+                    <form method="POST" action="http://10.0.20.30:5000/preset/allon" target="status">
                     <input class="button small" type="submit" name="state" value="On">
                     </form>
             </fieldset>
