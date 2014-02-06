@@ -10,7 +10,7 @@ machinery.
 Since we don't care about where the bars are and how many we have, the most
 basic component we consider in a socket. A socket can be turned on or off.
 A socket can be part of a group. As such, a group consists of a set of sockets.
-Groups can be turned on or off as a whole. Finally, there will be prefixes,
+Groups can be turned on or off as a whole. Finally, there will be presets,
 which consist of a two sets of groups, one set that needs to be turned off,
 one that needs to be turned on.
 
@@ -29,7 +29,7 @@ sockets.
 
 === Prefixes ===
 
-A prefix contains a set of groups to turn off and a set of groups to turn on.
+A preset contains a set of groups to turn off and a set of groups to turn on.
 
 == Security ==
 
@@ -49,7 +49,7 @@ access to all components) will follow.
 export MLP_HOST=10.0.20.30
 export MLP_PORT=5000
 
-a BAR and SOCKET are number, a group and a prefix are strings
+a BAR and SOCKET are number, a group and a preset are strings
 
 === Sockets ===
 
@@ -66,7 +66,7 @@ Concrete:
 
 === Prefix ===
 
-    curl -d "" http://$MLP_HOST:$MLP_PORT/prefix/alloff
+    curl -d "" http://$MLP_HOST:$MLP_PORT/preset/alloff
 
 == Examples ==
 
