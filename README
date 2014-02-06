@@ -11,9 +11,25 @@ Since we don't care about where the bars are and how many we have, the most
 basic component we consider in a socket. A socket can be turned on or off.
 A socket can be part of a group. As such, a group consists of a set of sockets.
 Groups can be turned on or off as a whole. Finally, there will be prefixes,
-which consist of a set of groups. A prefix can be turned on or off as a whole,
-thus turning on or off and the groups in said prefix, and all the sockets in all
-said groups.
+which consist of a two sets of groups, one set that needs to be turned off,
+one that needs to be turned on.
+
+=== Bars ===
+
+Each powerbar has a number of sockets.
+
+=== Sockets ===
+
+Each socket can be turned off and on indivitually.
+
+=== Groups ===
+
+Each group contains a set of sockets and thus allows turning off or on a set of
+sockets.
+
+=== Prefixes ===
+
+A prefix contains a set of groups to turn off and a set of groups to turn on.
 
 == Security ==
 
@@ -33,32 +49,25 @@ access to all components) will follow.
 export MLP_HOST=10.0.20.30
 export MLP_PORT=5000
 
-for i in $(seq 0 19) ; do curl -d state=On http://$MLP_HOST:$MLP_PORT/0/$i ; done
+a BAR and SOCKET are number, a group and a prefix are strings
+
+=== Sockets ===
+
+    curl -d state=$STATE http://$MLP_HOST:$MLP_PORT/$BAR/$SOCKET
+
+Concrete:
+
+    curl -d state=Off http://$MLP_HOST:$MLP_PORT/0/3
+
+=== Groups ===
+
+    curl -d state=Off http://$MLP_HOST:$MLP_PORT/group/table
+
+
+=== Prefix ===
+
+    curl -d "" http://$MLP_HOST:$MLP_PORT/prefix/alloff
 
 == Examples ==
 
-Currently supported "Groups":
-- 'lights' (Table, 3D, BAR, Solder)
-- 'table', '3d', 'bar', 'solder' (Individual ones)
-- 'printer' (Printer)
-- 'av' (AV Monitors)
-
-Note that if multiple groups are 'On', you need to turn all of them off for the
-light/bar to go off.
-
-Current examples:
-
-    # Off
-    curl -d state=On http://$HOST:$PORT/group/lights
-
-    # On
-    curl -d state=Off http://$HOST:$PORT/group/lights
-
-Turn all lights off:
-
-    for i in "lights" "3d" "table" "solder" "bar"; do curl -d state=Off http://$MLP_HOST:$MLP_PORT/group/$i; done;
-
-== TODO / Braindump ==
-
-Extra POST var, kill=graceful or force
-
+Check barconfig.py
