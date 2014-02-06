@@ -1,18 +1,27 @@
-from flask import Flask, request, abort
+from flask import Flask, request, abort, render_template
 app = Flask(__name__)
-app.debug=True
+app.debug = True
 
 from barconfig import bars, groups, groups_state #,prefixes
+
+ALLOW_GET = False # True to allow GET requests
 
 class InputException(Exception):
     pass
 
-def get_state(request):
-    if 'state' in request.form:
-        if request.form['state'] == 'On':
+def get_state(request, post=True):
+    if post:
+        if 'state' in request.form:
+            if request.form['state'] == 'On':
+                return True
+            elif request.form['state'] == 'Off':
+                return False
+    elif ALLOW_GET:
+        if request.args.get('state') == 'On':
             return True
-        elif request.form['state'] == 'Off':
+        elif request.args.get('state') == 'Off':
             return False
+
     raise InputException('')
 
 def group_set_state(group, socket, state):
@@ -33,7 +42,6 @@ def flip_state(state_dict, key, state):
         state_dict[key] = state
         return True
 
-    # TODO: Add None
     if state_dict[key]:
         if state:
             return True
@@ -50,33 +58,37 @@ def flip_state(state_dict, key, state):
 
 
 def print_state():
+    s = ""
     for bar in bars:
         for socket in bar.sockets:
-            print socket.num, 'is at count:', socket.refcount
+            s += '%d is at count: %s\n' % (socket.num, str(socket.refcount))
 
     for k, v in groups_state.iteritems():
-        print k, v
+        s += '%s: %s\n' % (k, str(v))
 
-@app.route("/<int:bar>/<int:port>", methods=['GET', 'POST'])
+    print s
+    return s
+
+@app.route("/")
+def index():
+    return render_template('9000.html')
+
+@app.route("/<int:bar>/<int:port>", methods=['POST'])
 def powerbar_i(bar, port):
     # TODO: Disable this in general
     if request.method == 'GET':
         return "Bar: %d, Port %d\n" % (bar, port)
     else:
-        state = get_state(request)
+        state = get_state(request, request.method=='POST')
 
         # XXX: Check if bar is valid and return 404 if not
         bars[bar].sockets[port].set_state(state)
 
         return "Bar: %d, Port %d\n" % (bar, port)
 
-@app.route("/group/<group>", methods=['GET', 'POST'])
+@app.route("/group/<group>", methods=['POST'])
 def powerbar_g(group):
-    if request.method == 'GET':
-        pass
-    else:
-        state = get_state(request)
-
+    state = get_state(request, request.method=='POST')
 
     if flip_state(groups_state, group, state):
         for socket in groups[group]:
@@ -84,10 +96,11 @@ def powerbar_g(group):
 
         print_state()
 
-        return "Group: %s\n" % group
+        return render_template('status.html', group=group,
+                state="ON" if state else "OFF")
 
 
-#@app.route("/prefix/<prefix>", methods=['GET', 'POST'])
+#@app.route("/prefix/<prefix>", methods=['POST'])
 #def powerbar_p(prefix):
 #    if request.method == 'GET':
 #        pass

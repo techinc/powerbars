@@ -1,0 +1,93 @@
+<!doctype html>
+<html><head><title>TI REMOTE 9000</title>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.0.3/css/foundation.min.css">
+<style type="text/css">
+body { background: #FFF url("http://i.imgur.com/BbMZ7vr.png"); }
+iframe {
+    background: #FFF;
+    border: none;
+    overflow: hidden;
+    background: #DED;
+    margin-top: 4px;
+}
+form:last-child { margin-bottom: 0; }
+form:last-child fieldset { margin-bottom: 0; }
+.small-uncentered {
+    background: #FFF;
+    color: #222;
+    box-shadow: 0px 0px 2px #000000;
+}
+.button { margin-bottom: 2px; }
+</style></head>
+
+<body>
+    <div class="row">
+        <div class="medium-4 large-3 medium-centered small-uncentered columns text-center">
+
+            <iframe name="status" width="216" height="36"></iframe>
+
+            <form method="POST" action="http://10.0.20.30:5000/group/lights" target="status">
+                <fieldset><legend>Lights</legend>
+                    <input class="button small alert" type="submit" name="state" value="Off">
+                    <input class="button small" type="submit" name="state" value="On">
+                </fieldset>
+            </form>
+
+            <form method="POST" action="http://10.0.20.30:5000/group/av" target="status">
+                <fieldset><legend>AV</legend>
+                    <input class="button small alert" type="submit" name="state" value="Off">
+                    <input class="button small" type="submit" name="state" value="On">
+                </fieldset>
+            </form>
+
+            <form method="POST" action="http://10.0.20.30:5000/group/3d" target="status">
+                <fieldset><legend>3D</legend>
+                    <input class="button small alert" type="submit" name="state" value="Off">
+                    <input class="button small" type="submit" name="state" value="On">
+                </fieldset>
+            </form>
+
+            <form method="POST" action="http://10.0.20.30:5000/group/entrance" target="status">
+                <fieldset><legend>entrance</legend>
+                    <input class="button small alert" type="submit" name="state" value="Off">
+                    <input class="button small" type="submit" name="state" value="On">
+                </fieldset>
+            </form>
+
+            <form method="POST" action="http://10.0.20.30:5000/group/table" target="status">
+                <fieldset><legend>HUE</legend>
+                    <input class="button small alert" type="submit" name="state" value="Off">
+                    <input class="button small" type="submit" name="state" value="On">
+                </fieldset>
+            </form>
+
+            <form method="POST" action="http://10.0.20.30:5000/group/printer" target="status">
+                <fieldset><legend>Printer</legend>
+                    <input class="button small alert" type="submit" name="state" value="Off">
+                    <input class="button small" type="submit" name="state" value="On">
+                </fieldset>
+            </form>
+
+            <form method="POST" action="http://10.0.20.30:5000/group/bar" target="status">
+                <fieldset><legend>Bar</legend>
+                    <input class="button small alert" type="submit" name="state" value="Off">
+                    <input class="button small" type="submit" name="state" value="On">
+                </fieldset>
+            </form>
+
+            <form method="POST" action="http://10.0.20.30:5000/group/solder" target="status">
+                <fieldset><legend>Solder</legend>
+                    <input class="button small alert" type="submit" name="state" value="Off">
+                    <input class="button small" type="submit" name="state" value="On">
+                </fieldset>
+            </form>
+
+            <form method="POST" action="http://10.0.20.30:5000/group/displays" target="status">
+                <fieldset><legend>Displays</legend>
+                    <input class="button small alert" type="submit" name="state" value="Off">
+                    <input class="button small" type="submit" name="state" value="On">
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</body></html>
