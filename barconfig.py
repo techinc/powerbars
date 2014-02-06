@@ -43,7 +43,7 @@ for x in groups.iterkeys():
 
 GROUPS_LIGHT = ['entrance', 'solder', 'bar', 'table', '3d']
 
-prefixes = {
+presets = {
     'lightsoff' : {
         'Off' : GROUPS_LIGHT,
         'On' : [],
@@ -64,6 +64,6 @@ prefixes = {
     },
 }
 
-prefixes_state = {}
-for x in prefixes.iterkeys():
-    prefixes_state[x] = None
+presets_state = {}
+for x in presets.iterkeys():
+    presets_state[x] = None

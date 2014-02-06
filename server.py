@@ -2,7 +2,7 @@ from flask import Flask, request, abort, render_template
 app = Flask(__name__)
 app.debug = True
 
-from barconfig import bars, groups, groups_state, prefixes
+from barconfig import bars, groups, groups_state, presets
 
 ALLOW_GET = False # True to allow GET requests
 
@@ -100,21 +100,21 @@ def powerbar_g(group):
                 state="ON" if state else "OFF")
 
 
-@app.route("/prefix/<prefix>", methods=['POST'])
-def powerbar_p(prefix):
+@app.route("/preset/<preset>", methods=['POST'])
+def powerbar_p(preset):
     if request.method == 'GET':
         pass
     else:
-        for state in prefixes[prefix]:
+        for state in presets[preset]:
             state = state == 'On'
-            for group in prefixes[prefix]['On' if state else 'Off']:
+            for group in presets[preset]['On' if state else 'Off']:
                 if flip_state(groups_state, group, state):
                     for socket in groups[group]:
                         group_set_state(group, socket, state)
 
         print_state()
 
-        return "Prefix: %s\n" % prefix
+        return "Prefix: %s\n" % preset
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
