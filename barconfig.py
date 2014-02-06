@@ -26,8 +26,6 @@ MONITOR_AV_1            = FIRST_BAR[19]
 MONITOR_AV_2            = FIRST_BAR[20]
 
 groups = {
-    'lights' : [LIGHT_SOLDER, LIGHT_BAR, LIGHT_TABLE, LIGHT_3D,
-        LIGHT_ENTRANCE],
     'entrance' : [LIGHT_ENTRANCE],
     'solder' : [LIGHT_SOLDER],
     'bar' : [LIGHT_BAR],
@@ -43,15 +41,29 @@ groups_state = {}
 for x in groups.iterkeys():
     groups_state[x] = None
 
-GROUPS_LIGHT = groups['lights']
+GROUPS_LIGHT = ['entrance', 'solder', 'bar', 'table', '3d']
 
-#prefixes = {
-#    'spacestate' : [
-#        GROUPS_LIGHT,
-#    ]
-#}
-#
-#prefixes_state = {}
-#for x in prefixes.iterkeys():
-#    prefixes_state[x] = False
-#
+prefixes = {
+    'lightsoff' : {
+        'Off' : GROUPS_LIGHT,
+        'On' : [],
+    },
+    'lightson' : {
+        'Off' : [],
+        'On' : GROUPS_LIGHT,
+    },
+    'alloff' :{
+        'Off' : list(groups.iterkeys()),
+    },
+    'allon' :{
+        'On' : list(groups.iterkeys()),
+    },
+    'the lone solder' :{
+        'Off' : 'entrance bar table 3d displays av printer'.split(),
+        'On' : ['solder'],
+    },
+}
+
+prefixes_state = {}
+for x in prefixes.iterkeys():
+    prefixes_state[x] = None

@@ -25,13 +25,23 @@ form:last-child fieldset { margin-bottom: 0; }
         <div class="medium-4 large-3 medium-centered small-uncentered columns text-center">
 
             <iframe name="status" width="216" height="36"></iframe>
-
-            <form method="POST" action="http://10.0.20.30:5000/group/lights" target="status">
                 <fieldset><legend>Lights</legend>
+                    <form method="POST" action="http://10.0.20.30:5000/prefix/lightsoff" target="status">
                     <input class="button small alert" type="submit" name="state" value="Off">
+                    </form>
+                    <form method="POST" action="http://10.0.20.30:5000/prefix/lightson" target="status">
                     <input class="button small" type="submit" name="state" value="On">
+                    </form>
                 </fieldset>
-            </form>
+
+            <fieldset><legend>ALL</legend>
+                    <form method="POST" action="http://10.0.20.30:5000/prefix/alloff" target="status">
+                    <input class="button small alert" type="submit" name="state" value="Off">
+                    </form>
+                    <form method="POST" action="http://10.0.20.30:5000/prefix/allon" target="status">
+                    <input class="button small" type="submit" name="state" value="On">
+                    </form>
+            </fieldset>
 
             <form method="POST" action="http://10.0.20.30:5000/group/av" target="status">
                 <fieldset><legend>AV</legend>
