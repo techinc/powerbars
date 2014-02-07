@@ -53,6 +53,8 @@ class PowerSocket(object):
         self.num = num + 1
         self.name = 'Socket %d' % self.num if not name else name
 
+        self.state = None
+
         self.refcount = []
 
     def __str__(self):
@@ -63,6 +65,7 @@ class PowerSocket(object):
 
     def set_state(self, state):
         s = 'On' if state else 'Off'
+        self.state = state
         print 'Setting', self.num, 'to', s
         m = '%s %d\r\n' % (s, self.num)
         write_read(self.bar.s, m)

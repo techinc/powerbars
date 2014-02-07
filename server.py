@@ -4,22 +4,18 @@ app.debug = True
 
 from barconfig import bars, groups, groups_state, presets
 
+import json
+
 ALLOW_GET = False # True to allow GET requests
 
 class InputException(Exception):
     pass
 
-def get_state(request, post=True):
-    if post:
-        if 'state' in request.form:
-            if request.form['state'] == 'On':
-                return True
-            elif request.form['state'] == 'Off':
-                return False
-    elif ALLOW_GET:
-        if request.args.get('state') == 'On':
+def get_state(request):
+    if 'state' in request.form:
+        if request.form['state'] == 'On':
             return True
-        elif request.args.get('state') == 'Off':
+        elif request.form['state'] == 'Off':
             return False
 
     raise InputException('')
@@ -73,34 +69,40 @@ def print_state():
 def index():
     return render_template('9000.html')
 
-@app.route("/<int:bar>/<int:port>", methods=['POST'])
+@app.route("/<int:bar>/<int:port>", methods=['GET', 'POST'])
 def powerbar_i(bar, port):
     # TODO: Disable this in general
     if request.method == 'GET':
-        return "Bar: %d, Port %d\n" % (bar, port)
+        return str(bars[bar].sockets[port].state)
     else:
-        state = get_state(request, request.method=='POST')
+        state = get_state(request)
 
         # XXX: Check if bar is valid and return 404 if not
         bars[bar].sockets[port].set_state(state)
 
         return "Bar: %d, Port %d\n" % (bar, port)
 
-@app.route("/group/<group>", methods=['POST'])
+@app.route("/group/<group>", methods=['GET', 'POST'])
 def powerbar_g(group):
-    state = get_state(request, request.method=='POST')
-
-    if flip_state(groups_state, group, state):
+    if request.method == 'GET':
+        states = []
         for socket in groups[group]:
-            group_set_state(group, socket, state)
+            states.append((str(socket), socket.state))
+        return json.dumps(states)
+    else:
+        state = get_state(request)
 
-        print_state()
+        if flip_state(groups_state, group, state):
+            for socket in groups[group]:
+                group_set_state(group, socket, state)
 
-        return render_template('status.html', group=group,
-                state="ON" if state else "OFF")
+            print_state()
+
+            return render_template('status.html', group=group,
+                    state="ON" if state else "OFF")
 
 
-@app.route("/preset/<preset>", methods=['POST'])
+@app.route("/preset/<preset>", methods=['GET','POST'])
 def powerbar_p(preset):
     if request.method == 'GET':
         pass
