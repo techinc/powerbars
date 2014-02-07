@@ -105,19 +105,19 @@ def powerbar_g(group):
 
 @app.route("/preset/<preset>", methods=['GET','POST'])
 def powerbar_p(preset):
-    if request.method == 'GET':
-        pass
-    else:
-        for state in presets[preset]:
-            state = state == 'On'
-            for group in presets[preset]['On' if state else 'Off']:
-                if flip_state(groups_state, group, state):
-                    for socket in groups[group]:
-                        group_set_state(group, socket, state)
+    #if request.method == 'GET':
+    #    pass
+    #else:
+    for state in presets[preset]:
+        state = state == 'On'
+        for group in presets[preset]['On' if state else 'Off']:
+            if flip_state(groups_state, group, state):
+                for socket in groups[group]:
+                    group_set_state(group, socket, state)
 
-        print_state()
+    print_state()
 
-        return "Prefix: %s\n" % preset
+    return "Prefix: %s\n" % preset
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

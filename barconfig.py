@@ -17,6 +17,12 @@ LIGHT_BAR               = FIRST_BAR[4]
 LIGHT_TABLE             = FIRST_BAR[5]
 LIGHT_3D                = FIRST_BAR[6]
 LIGHT_ENTRANCE          = FIRST_BAR[7]
+LIGHT_X                 = FIRST_BAR[8]
+LIGHT_Y                 = FIRST_BAR[9]
+LIGHT_Z                 = FIRST_BAR[10]
+
+AUDIO_AMPLIFIER         = FIRST_BAR[13]
+AUDIO_MIXER             = FIRST_BAR[14]
 
 MONITOR_3D_1            = FIRST_BAR[16]
 MONITOR_3D_2            = FIRST_BAR[17]
@@ -30,6 +36,10 @@ groups = {
     'solder' : [LIGHT_SOLDER],
     'bar' : [LIGHT_BAR],
     'table' : [LIGHT_TABLE],
+    'x' : [LIGHT_X],
+    'y' : [LIGHT_Y],
+    'z' : [LIGHT_Z],
+    'audio' : [AUDIO_AMPLIFIER, AUDIO_MIXER],
     '3d' : [LIGHT_3D, MONITOR_3D_1, MONITOR_3D_2],
     'displays' : [MONITOR_AV_1, MONITOR_AV_2, MONITOR_3D_1, MONITOR_3D_2],
     'av' : [MONITOR_AV_1, MONITOR_AV_2],
@@ -38,10 +48,10 @@ groups = {
 
 
 groups_state = {}
-for x in groups.iterkeys():
-    groups_state[x] = None
+for _ in groups.iterkeys():
+    groups_state[_] = None
 
-GROUPS_LIGHT = ['entrance', 'solder', 'bar', 'table', '3d']
+GROUPS_LIGHT = ['entrance', 'solder', 'bar', 'table', '3d', 'x', 'y', 'z']
 
 presets = {
     'lightsoff' : {
