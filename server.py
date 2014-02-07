@@ -73,7 +73,8 @@ def index():
 def powerbar_i(bar, port):
     # TODO: Disable this in general
     if request.method == 'GET':
-        return str(bars[bar].sockets[port].state)
+        return json.dumps({str(bars[bar].sockets[port]) :
+                str(bars[bar].sockets[port].state)})
     else:
         state = get_state(request)
 
@@ -87,7 +88,7 @@ def powerbar_g(group):
     if request.method == 'GET':
         states = []
         for socket in groups[group]:
-            states.append((str(socket), socket.state))
+            states.append((str(socket), str(socket.state)))
         return json.dumps(states)
     else:
         state = get_state(request)
