@@ -63,7 +63,3 @@ presets = {
         'On' : ['solder'],
     },
 }
-
-presets_state = {}
-for x in presets.iterkeys():
-    presets_state[x] = None
