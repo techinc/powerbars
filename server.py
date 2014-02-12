@@ -69,6 +69,10 @@ def print_state():
 def index():
     return render_template('9000.html')
 
+@app.route("/alt")
+def alt():
+    return render_template('alt.html')
+
 @app.route("/<int:bar>/<int:port>", methods=['GET', 'POST'])
 def powerbar_i(bar, port):
     # TODO: Disable this in general
