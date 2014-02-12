@@ -17,14 +17,14 @@ p {margin: 0;}
         <h2>Presets</h2>
           <p ng-repeat="preset in presets">
             {$ preset $}
-            <button ng-click="switchPreset(preset, true)">On</button>
-            <button ng-click="switchPreset(preset, false)">Off</button>
+            <button ng-click="switch('preset', preset, true)">On</button>
+            <button ng-click="switch('preset', preset, false)">Off</button>
           </p>
         <h2>Groups</h2>
           <p ng-repeat="group in groups">
             {$ group $}
-            <button ng-click="switchOn(preset)">On</button>
-            <button ng-click="switchOff(preset)">Off</button>
+            <button ng-click="switch('group', group, true)">On</button>
+            <button ng-click="switch('group', group, false)">Off</button>
           </p>
     </div>
 </body>
@@ -37,9 +37,12 @@ var phonecatApp = angular.module('powerbarApp', []).config(function($interpolate
 phonecatApp.controller('PowerBarCtrl', function($scope, $http) {
   $scope.presets = ['Lights', 'All'];
   $scope.groups = ['AV', '3D', 'Entrance', 'HUE', 'Printer', 'Bar', 'Solder', 'Displays'];
-  $scope.switchPreset = function(name, onoff) {
+  $scope.switch = function(tipe, name, onoff) {
     var onoffstring = onoff ? 'on' : 'off';
-    $http.post('/preset/' + name.toLowerCase() + onoffstring, {}).success(function(data, status, headers, config) {
+    if(tipe == 'group') {
+        onoffstring = '';
+    }
+    $http.post('/' + tipe + '/' + name.toLowerCase() + onoffstring, {}).success(function(data, status, headers, config) {
         console.log(data + ' ' + status);
     });
   };
