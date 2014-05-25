@@ -1,5 +1,7 @@
 import time
 
+from vbar import VirtualPowerBar, VirtualPowerSocket
+
 VIRTUAL = False
 
 if not VIRTUAL:
@@ -22,8 +24,10 @@ def write_read(s, m):
     return f
 
 
-class PowerBar(object):
-    def __init__(self, path, sn, name):
+class PowerBar(VirtualPowerBar):
+    def __init__(self, path, sn=20, name='Default PowerBar name'):
+        VirtualPowerBar.__init__(self, num)
+
         s = Serial(port=path, baudrate=9600)
 
         # Just in case
@@ -35,33 +39,10 @@ class PowerBar(object):
         self.sockets = [PowerSocket(self, _) for _ in xrange(sn)]
         self.name = name
 
-    def __len__(self):
-        return len(self.sockets)
 
-    def __getitem__(self, index):
-        return self.sockets[index - 1] # XXX: YAFOOOO
-
-    def __iter__(self):
-        return iter(self.sockets)
-
-class PowerSocket(object):
+class PowerSocket(VirtualPowerSocket):
     def __init__(self, bar, num, name=None):
-        """
-        Name is purely for descriptive purposes
-        """
-        self.bar = bar
-        self.num = num + 1
-        self.name = 'Socket %d' % self.num if not name else name
-
-        self.state = None
-
-        self.refcount = []
-
-    def __str__(self):
-        return self.name
-
-    def __repr__(self):
-        return 'PowerSocket (%s)' % self.name
+        VirtualPowerSocket.__init__(self, bar, num, name)
 
     def set_state(self, state):
         s = 'On' if state else 'Off'
@@ -74,7 +55,7 @@ on = True
 stat = 'On' if on else 'Off'
 
 if __name__ == '__main__':
-    b = PowerBar('/dev/ttyUSB0', 20)
+    b = PowerBar('/dev/ttyUSB0', 20, 'Texting')
 
     write_read(b.s, '\r\n')
     for s in b.sockets:

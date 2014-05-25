@@ -32,7 +32,6 @@ def group_set_state(group, socket, state):
             socket.set_state(state)
 
 
-
 def flip_state(state_dict, key, state):
     if state_dict[key] == None:
         state_dict[key] = state
@@ -65,13 +64,27 @@ def print_state():
     print s
     return s
 
+
 @app.route("/")
 def index():
-    return render_template('9000.html')
+    return render_template('main.html')
+    #return render_template('9000.html')
+
 
 @app.route("/alt")
 def alt():
     return render_template('alt.html')
+
+@app.route('/all', methods=['GET'])
+def all():
+    b = {}
+    if request.method == 'GET':
+        for bar in xrange(len(bars)):
+            states = []
+            for socket in bars[bar].sockets:
+                states.append((str(socket), str(socket.state)))
+            b[bar] = states
+        return json.dumps(b)
 
 @app.route("/<int:bar>/<int:port>", methods=['GET', 'POST'])
 def powerbar_i(bar, port):
@@ -86,6 +99,12 @@ def powerbar_i(bar, port):
         bars[bar].sockets[port].set_state(state)
 
         return "Bar: %d, Port %d\n" % (bar, port)
+
+@app.route("/<bar>/<int:port>", methods=['GET', 'POST'])
+def powerbar_iname(bar, port):
+    for idx, b in enumerate(bars):
+        if b.name == bar:
+            return powerbar_i(idx, port)
 
 @app.route("/group/<group>", methods=['GET', 'POST'])
 def powerbar_g(group):
@@ -122,6 +141,7 @@ def powerbar_p(preset):
     print_state()
 
     return "Prefix: %s\n" % preset
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
