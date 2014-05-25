@@ -4,7 +4,7 @@
 
 <h1> Bars </h1>
 {% for bar in bars %}
-<h2> {{ bar }} </h2>
+<h2> {{ bar.name }} </h2>
   {% for socket in bar.sockets %}
   <p> {{ socket }} </p>
   <pre> http://powerbar.ti:5000/{{ bar.name}}/{{socket.num}} </pre>
@@ -14,7 +14,7 @@
 <h1> Groups </h1>
 {% for group in groups %}
 <p> {{ group }} </p>
-<pre> http://powerbar.ti:5000/group/{{ group }}
+<pre> http://powerbar.ti:5000/group/{{ group }} </pre>
 
 {% endfor %}
 
@@ -30,3 +30,4 @@
 
 
 </body><html>
+
