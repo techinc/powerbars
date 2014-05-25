@@ -2,6 +2,29 @@
 
 <title> Powerbar </title>
 
+<h1> Bars </h1>
+{% for bar in bars %}
+<h2> {{ bar }} </h2>
+  {% for socket in bar.sockets %}
+  <p> {{ socket }} </p>
+  <pre> http://powerbar.ti:5000/{{ bar.name}}/{{socket.num}} </pre>
+  {% endfor %}
+{% endfor %}
+
+<h1> Groups </h1>
+{% for group in groups %}
+<p> {{ group }} </p>
+<pre> http://powerbar.ti:5000/group/{{ group }}
+
+{% endfor %}
+
+<h1> Presets </h1>
+
+{% for preset in presets %}
+<p> {{ preset }} </p>
+<pre> http://powerbar.ti:5000/preset/{{ preset }}
+
+{% endfor %}
 
 <head><body>
 

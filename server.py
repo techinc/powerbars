@@ -67,9 +67,7 @@ def print_state():
 
 @app.route("/")
 def index():
-    return render_template('main.html')
-    #return render_template('9000.html')
-
+    return render_template('main.html', bars=bars, groups=groups, presets=presets)
 
 @app.route("/alt")
 def alt():
