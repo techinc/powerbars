@@ -26,7 +26,7 @@ def write_read(s, m):
 
 class PowerBar(VirtualPowerBar):
     def __init__(self, path, sn=20, name='Default PowerBar name'):
-        VirtualPowerBar.__init__(self, num)
+        VirtualPowerBar.__init__(self, name)
 
         s = Serial(port=path, baudrate=9600)
 
@@ -37,7 +37,6 @@ class PowerBar(VirtualPowerBar):
 
         self.s = s
         self.sockets = [PowerSocket(self, _) for _ in xrange(sn)]
-        self.name = name
 
 
 class PowerSocket(VirtualPowerSocket):
