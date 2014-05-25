@@ -59,6 +59,10 @@ Concrete:
 
     curl -d state=Off http://$MLP_HOST:$MLP_PORT/0/3
 
+Bars can also be addressed by name:
+
+    curl -d state=Off http://$MLP_HOST:$MLP_PORT/AUX/3
+
 === Groups ===
 
     curl -d state=Off http://$MLP_HOST:$MLP_PORT/group/table
