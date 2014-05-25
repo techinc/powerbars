@@ -2,6 +2,8 @@
 
 <title> Powerbar </title>
 
+<head><body>
+
 <h1> Bars </h1>
 {% for bar in bars %}
 <h2> {{ bar.name }} </h2>
@@ -13,7 +15,7 @@
 
 <h1> Groups </h1>
 {% for group in groups %}
-<p> {{ group }} </p>
+<p> {{ group }} ({{ groups[group] }}) </p>
 <pre> http://powerbar.ti:5000/group/{{ group }} </pre>
 
 {% endfor %}
@@ -26,8 +28,7 @@
 
 {% endfor %}
 
-<head><body>
-
 
 </body><html>
+
 
