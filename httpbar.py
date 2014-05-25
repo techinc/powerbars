@@ -1,7 +1,7 @@
 import requests
 from vbar import VirtualPowerSocket, VirtualPowerBar
 
-TIMEOUT = 1.
+TIMEOUT = 5. # Quite high; but this is a lot more stable.
 
 class HTTPPowerBar(VirtualPowerBar):
     def __init__(self, host='http://powerbar.ti', sn=20, name='HTTPPowerBar'):
