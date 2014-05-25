@@ -1,4 +1,5 @@
-from bar import PowerBar, write_read
+from bar import PowerBar
+from httpbar import HTTPPowerBar
 
 # TODO: Keep track of active profile, simple use-counter
 # Disable low level access (per socket)
@@ -6,31 +7,49 @@ from bar import PowerBar, write_read
 
 bars = []
 
-FIRST_BAR = PowerBar('/dev/ttyS0', 20, 'My Little Powerbar (MLP)')
+FIRST_BAR = PowerBar('/dev/ttyS0', 20, 'MLP')
+AUX_BAR = HTTPPowerBar(host='http://10.0.20.61:5000', sn=20, name='AUX')
 
 bars += [
-    FIRST_BAR
+    FIRST_BAR,
+    AUX_BAR
 ]
+
+def make_bar(name, bar, idx):
+    globals()[name] = bar[idx]
+    bar[idx].name = name
 
 # Bar 1
 
-LIGHT_MAKERLANE         = FIRST_BAR[3]
-LIGHT_MAKERTABLE        = FIRST_BAR[4]
-LIGHT_TABLE             = FIRST_BAR[5]
-LIGHT_CRAFT             = FIRST_BAR[6]
-LIGHT_ENTRANCE          = FIRST_BAR[7]
-LIGHT_KITCHEN           = FIRST_BAR[8]
-LIGHT_SOFA              = FIRST_BAR[10]
+make_bar('LIGHT_MAKERLANE', FIRST_BAR, 3)
+make_bar('LIGHT_MAKERTABLE', FIRST_BAR, 4)
+make_bar('LIGHT_TABLE', FIRST_BAR, 5)
+make_bar('LIGHT_CRAFT', FIRST_BAR, 6)
+make_bar('LIGHT_ENTRANCE', FIRST_BAR, 7)
+make_bar('LIGHT_KITCHEN', FIRST_BAR, 8)
+make_bar('LIGHT_SOFA', FIRST_BAR, 10)
 
-AUDIO_AMPLIFIER         = FIRST_BAR[13]
-AUDIO_MIXER             = FIRST_BAR[14]
+make_bar('AUDIO_AMPLIFIER', FIRST_BAR, 13)
+make_bar('AUDIO_MIXER', FIRST_BAR, 14)
 
-MONITOR_3D_1            = FIRST_BAR[16]
-MONITOR_3D_2            = FIRST_BAR[17]
+make_bar('MONITOR_3D_1', FIRST_BAR, 16)
+make_bar('MONITOR_3D_2', FIRST_BAR, 17)
 
-PRINTER                 = FIRST_BAR[18]
-MONITOR_AV_1            = FIRST_BAR[19]
-MONITOR_AV_2            = FIRST_BAR[20]
+make_bar('PRINTER', FIRST_BAR, 18)
+make_bar('MONITOR_AV_1', FIRST_BAR, 19)
+make_bar('MONITOR_AV_2', FIRST_BAR, 20)
+
+make_bar('W_POWER_NW_TABLE', AUX_BAR, 2)
+make_bar('W_POWER_SW_TABLE', AUX_BAR, 7)
+make_bar('W_POWER_MAIN_TABLE', AUX_BAR, 3)
+make_bar('W_POWER_PILLAR', AUX_BAR, 20)
+
+make_bar('W_LIGHT_TABLE', AUX_BAR, 4)
+make_bar('W_LIGHT_TL_DOOR', AUX_BAR, 14)
+make_bar('W_LIGHT_SOLDER', AUX_BAR, 16)
+make_bar('W_LIGHT_THEATER', AUX_BAR, 17)
+make_bar('W_LIGHT_GLASS', AUX_BAR, 19)
+
 
 groups = {
     'general' : [LIGHT_ENTRANCE, LIGHT_KITCHEN, LIGHT_SOFA, LIGHT_TABLE],
@@ -40,6 +59,11 @@ groups = {
     'displays' : [MONITOR_AV_1, MONITOR_AV_2, MONITOR_3D_1, MONITOR_3D_2],
     'av' : [MONITOR_AV_1, MONITOR_AV_2],
     'printer' : [PRINTER],
+
+    'soldering' : [W_POWER_NW_TABLE, W_POWER_SW_TABLE, W_LIGHT_SOLDER],
+    'powerwest' : [W_POWER_NW_TABLE, W_POWER_MAIN_TABLE, W_POWER_SW_TABLE, W_POWER_PILLAR],
+    'lightwest' : [W_LIGHT_TABLE, W_LIGHT_THEATER, W_LIGHT_GLASS, W_LIGHT_SOLDER],
+    'tlwest'    : [W_LIGHT_TL_DOOR],
 }
 
 
@@ -47,7 +71,7 @@ groups_state = {}
 for _ in groups.iterkeys():
     groups_state[_] = None
 
-GROUPS_LIGHT = ['general', 'craft', 'makerlane']
+GROUPS_LIGHT = ['general', 'craft', 'makerlane', 'lightwest', 'tlwest']
 
 presets = {
     'lightsoff' : {
