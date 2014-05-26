@@ -1,0 +1,58 @@
+<!-- Main 2 -->
+
+<style>
+FORM { DISPLAY:inline; }
+</style>
+
+
+{% macro onoff(url, states) -%}
+{% for state in states %}
+<form action="{{ url }}" method="post">
+    <input type="hidden" name="state" value="{{ state }}">
+    <input type="submit" value="{{ state }}">
+</form> 
+{% endfor %}
+{%- endmacro %}
+
+{% set URL = "http://powerbar.ti:5000" %}
+
+<html>
+  <head>
+    <title> Powerbar </title>
+  </head>
+  <body>
+
+<h1> Presets </h1>
+
+{% for preset in presets %}
+<p> {{ preset }} </p>
+{{ onoff( URL + "/preset/" + preset, ("On",)) }}
+{% endfor %}
+
+
+<h1> Groups </h1>
+{% for group in groups %}
+
+<p> <b>{{ group }}</b> contains: (
+{% for socket in groups[group] %}
+{{ socket.name }},
+{% endfor %})
+</p>
+
+{{ onoff(URL + "/group/" + group, ("On", "Off")) }}
+{% endfor %}
+
+<h1> Bars </h1>
+{% for bar in bars %}
+<h2> {{ bar.name }} </h2>
+  <!-- filter(socketfilter, foo) filters everything that starts with 'Socket' -->
+  {% for socket in filter(socketfilter, bar.sockets) %}
+  <p> {{ socket.name }} ({{ socket.num }}) </p>
+  {{ onoff(URL + "/" + bar.name + "/" + (socket.num - 1)|string, ("On", "Off")) }}
+  {% endfor %}
+{% endfor %}
+
+
+  </body>
+<html>
+
