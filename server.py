@@ -67,7 +67,9 @@ def print_state():
 
 @app.route("/")
 def index():
-    return render_template('main-nojs.html', bars=bars, groups=groups, presets=presets)
+    return render_template('main-nojs.html', bars=bars, groups=groups,
+            presets=presets, filter=filter,
+            socketfilter=lambda x: not x.name.startswith('Socket'))
 
 @app.route("/alt")
 def alt():
@@ -118,7 +120,7 @@ def powerbar_g(group):
             for socket in groups[group]:
                 group_set_state(group, socket, state)
 
-            print_state()
+            #print_state()
 
             return render_template('status.html', group=group,
                     state="ON" if state else "OFF")
@@ -136,7 +138,7 @@ def powerbar_p(preset):
                 for socket in groups[group]:
                     group_set_state(group, socket, state)
 
-    print_state()
+    #print_state()
 
     return "Prefix: %s\n" % preset
 
