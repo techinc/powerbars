@@ -5,13 +5,19 @@ FORM { DISPLAY:inline; }
 </style>
 
 
-{% macro onoff(url, states) -%}
+{% macro onoff(url, states, name) -%}
+<tr> <td> {{ name }} </td>
 {% for state in states %}
+<td>
+<center>
 <form action="{{ url }}" method="post">
     <input type="hidden" name="state" value="{{ state }}">
     <input type="submit" value="{{ state }}">
 </form> 
+</center>
+</td>
 {% endfor %}
+</tr>
 {%- endmacro %}
 
 {% set URL = "http://powerbar.ti:5000" %}
@@ -24,32 +30,48 @@ FORM { DISPLAY:inline; }
 
 <h1> Presets </h1>
 
+<table border="2px">
+<tr> <td> Name </td> <td> Activate </td> </tr>
 {% for preset in presets %}
-<p> {{ preset }} </p>
-{{ onoff( URL + "/preset/" + preset, ("On",)) }}
+{{ onoff( URL + "/preset/" + preset, ("On",), preset) }}
 {% endfor %}
+</table>
 
 
 <h1> Groups </h1>
+<table border="2px">
+<tr> <td> Name </td> <td> On </td> <td> Off </td> </tr>
 {% for group in groups %}
 
+<!--
 <p> <b>{{ group }}</b> contains: (
 {% for socket in groups[group] %}
 {{ socket.name }},
 {% endfor %})
 </p>
+-->
 
-{{ onoff(URL + "/group/" + group, ("On", "Off")) }}
+{{ onoff(URL + "/group/" + group, ("On", "Off"), group) }}
 {% endfor %}
+</table>
 
 <h1> Bars </h1>
 {% for bar in bars %}
 <h2> {{ bar.name }} </h2>
+
+<table border="2px">
+<tr> <td> Name </td> <td> On </td> <td> Off </td> </tr>
+
   <!-- filter(socketfilter, foo) filters everything that starts with 'Socket' -->
   {% for socket in filter(socketfilter, bar.sockets) %}
+
+  <!--
   <p> {{ socket.name }} ({{ socket.num }}) </p>
-  {{ onoff(URL + "/" + bar.name + "/" + (socket.num - 1)|string, ("On", "Off")) }}
+  -->
+  {{ onoff(URL + "/" + bar.name + "/" + (socket.num - 1)|string, ("On", "Off"),
+  socket.name) }}
   {% endfor %}
+</table>
 {% endfor %}
 
 
