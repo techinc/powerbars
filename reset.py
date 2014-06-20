@@ -16,7 +16,7 @@ def resetserial(name):
     def serialwrite(s, m):
         s.write(m + '\r\n')
     
-    s = Serial(port='/dev/ttyS1', baudrate=9600)
+    s = Serial(port=name, baudrate=9600)
     
     s.write('\r\n')
     m = timeread(s)
