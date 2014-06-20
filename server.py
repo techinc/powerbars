@@ -1,3 +1,7 @@
+#!/usr/bin/env python2
+
+from __future__ import print_function
+
 from flask import Flask, request, abort, render_template
 app = Flask(__name__)
 app.debug = True
@@ -61,7 +65,7 @@ def print_state():
     for k, v in groups_state.iteritems():
         s += '%s: %s\n' % (k, str(v))
 
-    print s
+    print(s)
     return s
 
 
@@ -120,8 +124,6 @@ def powerbar_g(group):
             for socket in groups[group]:
                 group_set_state(group, socket, state)
 
-            #print_state()
-
             return render_template('status.html', group=group,
                     state="ON" if state else "OFF")
 
@@ -142,6 +144,15 @@ def powerbar_p(preset):
 
     return "Prefix: %s\n" % preset
 
+from reset import resetserial
+RESET = True
+
+from bar import PowerBar
 
 if __name__ == "__main__":
+    if RESET:
+        for bar in bars:
+            if isinstance(bar, PowerBar):
+                resetserial(bar.s.port)
+
     app.run(host='0.0.0.0')

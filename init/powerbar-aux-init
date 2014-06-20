@@ -1,0 +1,28 @@
+#!/sbin/runscript
+# Copyright 1999-2014 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+PIDFILE=${PIDFILE-/run/powerbar.pid}
+SERIALDEV="/dev/ttyS1"
+
+start() {
+    chown bar:bar "$SERIALDEV"
+    ebegin "Starting powerbar"
+    start-stop-daemon --start --background \
+        --make-pidfile --pidfile "$PIDFILE" \
+        --stdout "//home/bar/log/stdout" \
+        --stderr "//home/bar/log/stderr" \
+        --user bar:bar \
+        --exec "/home/bar/power/server.py" \
+        #--exec "/home/bar/power/server.py"
+    eend $?
+
+}
+
+stop() {
+    ebegin "Stopping powerbar"
+        start-stop-daemon --stop --exec "/home/bar/power/server.py" --pidfile "$PIDFILE"
+    eend $?
+
+}

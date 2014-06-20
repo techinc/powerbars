@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+from __future__ import print_function
+
 import time
 
 from vbar import VirtualPowerBar, VirtualPowerSocket
@@ -7,7 +11,7 @@ VIRTUAL = False
 if not VIRTUAL:
     from serial import Serial
 else:
-    print 'WARNING: Virtual mode activated'
+    print('WARNING: Virtual mode activated')
     class Serial(object):
         def __init__(self, **kwargs):
             pass
@@ -36,7 +40,7 @@ class PowerBar(VirtualPowerBar):
         s.setXonXoff(False)
 
         self.s = s
-        self.sockets = [PowerSocket(self, _) for _ in xrange(sn)]
+        self.sockets = [PowerSocket(self, _) for _ in range(sn)]
 
 
 class PowerSocket(VirtualPowerSocket):
@@ -46,7 +50,7 @@ class PowerSocket(VirtualPowerSocket):
     def set_state(self, state):
         s = 'On' if state else 'Off'
         self.state = state
-        print 'Setting', self.num, 'to', s
+        print('Setting', self.num, 'to', s)
         m = '%s %d\r\n' % (s, self.num)
         write_read(self.bar.s, m)
 
