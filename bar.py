@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+from __future__ import print_function
+
 import time
 
 from vbar import VirtualPowerBar, VirtualPowerSocket

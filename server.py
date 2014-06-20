@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+from __future__ import print_function
+
 from flask import Flask, request, abort, render_template
 app = Flask(__name__)
 app.debug = True
@@ -61,7 +65,7 @@ def print_state():
     for k, v in groups_state.iteritems():
         s += '%s: %s\n' % (k, str(v))
 
-    print s
+    print(s)
     return s
 
 
