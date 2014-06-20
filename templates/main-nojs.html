@@ -6,7 +6,7 @@ FORM { DISPLAY:inline; }
 
 
 {% macro onoff(url, states, name) -%}
-<tr> <td> {{ name }} </td>
+<td> {{ name }} </td>
 {% for state in states %}
 <td>
 <center>
@@ -17,7 +17,6 @@ FORM { DISPLAY:inline; }
 </center>
 </td>
 {% endfor %}
-</tr>
 {%- endmacro %}
 
 {% set URL = "" %}
@@ -28,12 +27,18 @@ FORM { DISPLAY:inline; }
   </head>
   <body>
 
+{% if msg %}
+<p> {{ msg }} </p>
+{% endif %}
+
 <h1> Presets </h1>
 
 <table border="2px">
 <tr> <td> Name </td> <td> Activate </td> </tr>
 {% for preset in presets %}
-{{ onoff( URL + "/preset/" + preset, ("On",), preset) }}
+<tr>
+{{ onoff( URL + "/preset/" + preset, ("Energise",), preset) }}
+</tr>
 {% endfor %}
 </table>
 
@@ -51,7 +56,9 @@ FORM { DISPLAY:inline; }
 </p>
 -->
 
+<tr>
 {{ onoff(URL + "/group/" + group, ("On", "Off"), group) }}
+</tr>
 {% endfor %}
 </table>
 
@@ -60,7 +67,7 @@ FORM { DISPLAY:inline; }
 <h2> {{ bar.name }} </h2>
 
 <table border="2px">
-<tr> <td> Name </td> <td> On </td> <td> Off </td> </tr>
+<tr> <td> Name </td> <td> On </td> <td> Off </td> <td> State </td></tr>
 
   <!-- filter(socketfilter, foo) filters everything that starts with 'Socket' -->
   {% for socket in filter(socketfilter, bar.sockets) %}
@@ -68,8 +75,11 @@ FORM { DISPLAY:inline; }
   <!--
   <p> {{ socket.name }} ({{ socket.num }}) </p>
   -->
+  <tr>
   {{ onoff(URL + "/" + bar.name + "/" + (socket.num - 1)|string, ("On", "Off"),
   socket.name) }}
+  <td> {{ socket.state }} </td>
+  </tr>
   {% endfor %}
 </table>
 {% endfor %}

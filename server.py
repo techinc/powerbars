@@ -9,6 +9,7 @@ app.debug = False
 from barconfig import bars, groups, groups_state, presets
 
 import json
+import time
 
 ALLOW_GET = False # True to allow GET requests
 
@@ -102,7 +103,12 @@ def powerbar_i(bar, port):
         # XXX: Check if bar is valid and return 404 if not
         bars[bar].sockets[port].set_state(state)
 
-        return "Bar: %d, Port %d\n" % (bar, port)
+#        return render_template('status_back.html', msg = "Bar: %d, Port %d\n" % (bar, port))
+        return render_template('main-nojs.html', bars=bars, groups=groups,
+                                presets=presets, filter=filter,
+                                socketfilter=lambda x: not
+                                x.name.startswith('Socket'),
+                                msg = "Bar: %d, Port %d\n" % (bar, port))
 
 @app.route("/<bar>/<int:port>", methods=['GET', 'POST'])
 def powerbar_iname(bar, port):
@@ -124,8 +130,14 @@ def powerbar_g(group):
             for socket in groups[group]:
                 group_set_state(group, socket, state)
 
-            return render_template('status.html', group=group,
-                    state="ON" if state else "OFF")
+        #return render_template('status_back.html', msg='%s is %s' % (group,
+        #                       'On' if state else 'Off'))
+        return render_template('main-nojs.html', bars=bars, groups=groups,
+                                presets=presets, filter=filter,
+                                socketfilter=lambda x: not
+                                x.name.startswith('Socket'),
+                                msg='%s is %s' %
+                                (group, 'On' if state else 'Off'))
 
 
 @app.route("/preset/<preset>", methods=['GET','POST'])
@@ -142,7 +154,13 @@ def powerbar_p(preset):
 
     #print_state()
 
-    return "Prefix: %s\n" % preset
+    #return render_template('status_back.html',
+    #        msg='Prefix is %s' % preset)
+    return render_template('main-nojs.html', bars=bars, groups=groups,
+                            presets=presets, filter=filter,
+                            socketfilter=lambda x: not
+                            x.name.startswith('Socket'),
+                            msg='Prefix is %s' % preset)
 
 from reset import resetserial
 RESET = True
@@ -153,6 +171,7 @@ if __name__ == "__main__":
     if RESET:
         for bar in bars:
             if isinstance(bar, PowerBar):
+                print('Resetting:', bar.s.port)
                 resetserial(bar.s.port)
 
     app.run(host='::')
