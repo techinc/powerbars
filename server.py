@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 
 from __future__ import print_function
 
@@ -123,8 +123,6 @@ def powerbar_g(group):
         if flip_state(groups_state, group, state):
             for socket in groups[group]:
                 group_set_state(group, socket, state)
-
-            #print_state()
 
             return render_template('status.html', group=group,
                     state="ON" if state else "OFF")
