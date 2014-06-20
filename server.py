@@ -155,4 +155,5 @@ if __name__ == "__main__":
             if isinstance(bar, PowerBar):
                 resetserial(bar.s.port)
 
-    app.run(host='0.0.0.0')
+    app.run(host='::')
+    #app.run(host='0.0.0.0')

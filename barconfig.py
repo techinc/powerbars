@@ -57,17 +57,16 @@ make_bar('W_LIGHT_GLASS', AUX_BAR, 19)
 
 groups = {
     'general' : [LIGHT_ENTRANCE, LIGHT_KITCHEN, LIGHT_SOFA, LIGHT_TABLE],
-    'craft' : [LIGHT_CRAFT],
     'audio' : [AUDIO_AMPLIFIER, AUDIO_MIXER],
-    'makerlane' : [LIGHT_MAKERLANE, LIGHT_MAKERTABLE, MONITOR_3D_1, MONITOR_3D_2],
     'displays' : [MONITOR_AV_1, MONITOR_AV_2, MONITOR_3D_1, MONITOR_3D_2],
     'av' : [MONITOR_AV_1, MONITOR_AV_2],
-    'printer' : [PRINTER],
 
     'soldering' : [W_POWER_NW_TABLE, W_POWER_SW_TABLE, W_LIGHT_SOLDER],
     'powerwest' : [W_POWER_NW_TABLE, W_POWER_MAIN_TABLE, W_POWER_SW_TABLE, W_POWER_PILLAR],
     'lightwest' : [W_LIGHT_TABLE, W_LIGHT_THEATER, W_LIGHT_GLASS, W_LIGHT_SOLDER],
     'tlwest'    : [W_LIGHT_TL_DOOR],
+    'makerlane' : [LIGHT_MAKERLANE, LIGHT_MAKERTABLE, MONITOR_3D_1,
+                   MONITOR_3D_2],
 }
 
 
@@ -75,7 +74,7 @@ groups_state = {}
 for _ in groups.keys():
     groups_state[_] = None
 
-GROUPS_LIGHT = ['general', 'craft', 'makerlane', 'lightwest', 'tlwest']
+GROUPS_LIGHT = ['general', 'makerlane', 'lightwest', 'tlwest']
 
 presets = {
     'lightsoff' : {
