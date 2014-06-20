@@ -52,7 +52,9 @@ class PowerSocket(VirtualPowerSocket):
         self.state = state
         print('Setting', self.num, 'to', s)
         m = '%s %d\r\n' % (s, self.num)
-        write_read(self.bar.s, m)
+        print 'Writing:', repr(m)
+        r = write_read(self.bar.s, m)
+        print 'Read:', repr(r)
 
 on = True
 stat = 'On' if on else 'Off'
