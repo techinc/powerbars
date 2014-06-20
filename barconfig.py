@@ -72,7 +72,7 @@ groups = {
 
 
 groups_state = {}
-for _ in groups.iterkeys():
+for _ in groups.keys():
     groups_state[_] = None
 
 GROUPS_LIGHT = ['general', 'craft', 'makerlane', 'lightwest', 'tlwest']
@@ -87,9 +87,9 @@ presets = {
         'On' : GROUPS_LIGHT,
     },
     'alloff' :{
-        'Off' : list(groups.iterkeys()),
+        'Off' : list(groups.keys()),
     },
     'allon' :{
-        'On' : list(groups.iterkeys()),
+        'On' : list(groups.keys()),
     },
 }
