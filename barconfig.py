@@ -12,7 +12,7 @@ from httpbar import HTTPPowerBar
 bars = []
 
 FIRST_BAR = PowerBar('/dev/ttyS0', 20, 'MLP')
-AUX_BAR = HTTPPowerBar(host='http://10.0.20.61:5000', sn=20, name='AUX')
+AUX_BAR = HTTPPowerBar(host='http://10.0.20.41:5000', sn=20, name='AUX')
 
 bars += [
     FIRST_BAR,
