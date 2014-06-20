@@ -40,7 +40,7 @@ class PowerBar(VirtualPowerBar):
         s.setXonXoff(False)
 
         self.s = s
-        self.sockets = [PowerSocket(self, _) for _ in ange(sn)]
+        self.sockets = [PowerSocket(self, _) for _ in range(sn)]
 
 
 class PowerSocket(VirtualPowerSocket):
