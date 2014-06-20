@@ -147,10 +147,12 @@ def powerbar_p(preset):
 from reset import resetserial
 RESET = True
 
+from bar import PowerBar
+
 if __name__ == "__main__":
     if RESET:
         for bar in bars:
             if isinstance(bar, PowerBar):
-                resetserial(bar.port)
+                resetserial(bar.s.port)
 
     app.run(host='0.0.0.0')
