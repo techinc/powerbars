@@ -11,7 +11,7 @@ VIRTUAL = False
 if not VIRTUAL:
     from serial import Serial
 else:
-    print 'WARNING: Virtual mode activated'
+    print('WARNING: Virtual mode activated')
     class Serial(object):
         def __init__(self, **kwargs):
             pass
@@ -50,7 +50,7 @@ class PowerSocket(VirtualPowerSocket):
     def set_state(self, state):
         s = 'On' if state else 'Off'
         self.state = state
-        print 'Setting', self.num, 'to', s
+        print('Setting', self.num, 'to', s)
         m = '%s %d\r\n' % (s, self.num)
         write_read(self.bar.s, m)
 
