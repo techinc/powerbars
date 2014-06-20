@@ -28,7 +28,7 @@ groups = {
 
 
 groups_state = {}
-for _ in groups.iterkeys():
+for _ in groups.keys():
     groups_state[_] = None
 
 GROUPS_LIGHT = []
