@@ -144,6 +144,13 @@ def powerbar_p(preset):
 
     return "Prefix: %s\n" % preset
 
+from reset import resetserial
+RESET = True
 
 if __name__ == "__main__":
+    if RESET:
+        for bar in bars:
+            if isinstance(bar, PowerBar):
+                resetserial(bar.port)
+
     app.run(host='0.0.0.0')
