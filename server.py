@@ -199,9 +199,8 @@ if __name__ == "__main__":
             # XXX: reset_bar here makes sure we've read everything from the bar
             # so it doesn't return bogus on the next read.
             # resetserial() actually resets certain configs in the bar
-            bar.reset_bar()
-
             if isinstance(bar, PowerBar):
+                bar.reset_bar()
                 print('Resetting:', bar.s.port)
                 resetserial(bar.s.port)
 
