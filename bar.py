@@ -55,12 +55,12 @@ class PowerBar(VirtualPowerBar):
         self.s = s
         self.sockets = [PowerSocket(self, _) for _ in range(sn)]
 
-def reset_bar(self, timeout=2):
-     self.s.timeout = timeout
-     self.s.write('\r\n')
-     m = self.s.read(1000)
-     print('Reset read:', m)
-     return True
+    def reset_bar(self, timeout=2):
+         self.s.timeout = timeout
+         self.s.write('\r\n')
+         m = self.s.read(1000)
+         print('Reset read:', m)
+         return True
 
 
 class PowerSocket(VirtualPowerSocket):
