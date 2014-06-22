@@ -196,10 +196,10 @@ from bar import PowerBar
 if __name__ == "__main__":
     if RESET:
         for bar in bars:
-             # XXX: reset_bar here makes sure we've read everything from the bar
-             # so it doesn't return bogus on the next read.
-             # resetserial() actually resets certain configs in the bar
-             bar.reset_bar()
+            # XXX: reset_bar here makes sure we've read everything from the bar
+            # so it doesn't return bogus on the next read.
+            # resetserial() actually resets certain configs in the bar
+            bar.reset_bar()
 
             if isinstance(bar, PowerBar):
                 print('Resetting:', bar.s.port)
