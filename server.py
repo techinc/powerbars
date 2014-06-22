@@ -11,6 +11,8 @@ from barconfig import bars, groups, groups_state, presets
 import json
 import time
 
+hack_time = time.time() - 120.
+
 ALLOW_GET = False # True to allow GET requests
 
 class InputException(Exception):
@@ -57,6 +59,17 @@ def flip_state(state_dict, key, state):
     return False
 
 
+def hack_reset_bars():
+    # XXX: Hackety-hack.
+    global hack_time
+    if time.time() - hack_time > 120.:
+        hack_time = time.time()
+        for bar in bars:
+            if hasattr(bar, 'reset_bar'):
+                bar.reset_bar()
+
+
+
 def print_state():
     s = ""
     for bar in bars:
@@ -100,6 +113,8 @@ def powerbar_i(bar, port):
     else:
         state = get_state(request)
 
+        hack_reset_bars()
+
         # XXX: Check if bar is valid and return 404 if not
         bars[bar].sockets[port].set_state(state)
 
@@ -126,6 +141,11 @@ def powerbar_g(group):
     else:
         state = get_state(request)
 
+        if group not in groups:
+            return 'Invalid group' # TODO: Error code
+
+        hack_reset_bars()
+
         if flip_state(groups_state, group, state):
             for socket in groups[group]:
                 group_set_state(group, socket, state)
@@ -145,6 +165,12 @@ def powerbar_p(preset):
     #if request.method == 'GET':
     #    pass
     #else:
+
+    if preset not in presets:
+        return 'Invalid preset' # TODO: Error code
+
+    hack_reset_bars()
+
     for state in presets[preset]:
         state = state == 'On'
         for group in presets[preset]['On' if state else 'Off']:
@@ -170,6 +196,11 @@ from bar import PowerBar
 if __name__ == "__main__":
     if RESET:
         for bar in bars:
+             # XXX: reset_bar here makes sure we've read everything from the bar
+             # so it doesn't return bogus on the next read.
+             # resetserial() actually resets certain configs in the bar
+             bar.reset_bar()
+
             if isinstance(bar, PowerBar):
                 print('Resetting:', bar.s.port)
                 resetserial(bar.s.port)

@@ -19,11 +19,24 @@ else:
         def __getattr__(self, attr):
             return lambda self, **kwargs: None
 
+def optimistic_read(s, read_len=20):
+    b = ''
+    s.timeout = 0.2
+    while True:
+        p = s.read(read_len)
+        b += p
+        if len(p) != read_len:
+            break
+
+    return b
+
+
 def write_read(s, m):
     s.write(m)
-    s.timeout = 10
+    s.timeout = 2
     l = len(m) + len('RPC-28A>\r')
     t1 = time.time()
+    #f = optimistic_read(s)
     f = s.read(l)
     return f
 
@@ -41,6 +54,13 @@ class PowerBar(VirtualPowerBar):
 
         self.s = s
         self.sockets = [PowerSocket(self, _) for _ in range(sn)]
+
+def reset_bar(self, timeout=2):
+     self.s.timeout = timeout
+     self.s.write('\r\n')
+     m = self.s.read(1000)
+     print('Reset read:', m)
+     return True
 
 
 class PowerSocket(VirtualPowerSocket):
