@@ -9,7 +9,10 @@ from vbar import VirtualPowerBar, VirtualPowerSocket
 VIRTUAL = False
 
 if not VIRTUAL:
-    from serial import Serial
+    try:
+        from serial import Serial
+    except ImportError as e:
+        print('Could not import serial. Trying to continue', e)
 else:
     print('WARNING: Virtual mode activated')
     class Serial(object):

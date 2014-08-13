@@ -11,7 +11,7 @@ from httpbar import HTTPPowerBar
 
 bars = []
 
-FIRST_BAR = PowerBar('/dev/ttyS0', 20, 'MLP')
+FIRST_BAR = HTTPPowerBar(host='10.0.20.17', sn=20, name='MLP')
 AUX_BAR = HTTPPowerBar(host='http://10.0.20.41:5000', sn=20, name='AUX')
 
 bars += [
@@ -47,6 +47,8 @@ make_bar('W_POWER_NW_TABLE', AUX_BAR, 2)
 make_bar('W_POWER_SW_TABLE', AUX_BAR, 7)
 make_bar('W_POWER_MAIN_TABLE', AUX_BAR, 3)
 make_bar('W_POWER_PILLAR', AUX_BAR, 20)
+
+make_bar('W_AIR_FAN', AUX_BAR, 6)
 
 make_bar('W_LIGHT_TABLE', AUX_BAR, 4)
 make_bar('W_LIGHT_TL_DOOR', AUX_BAR, 14)

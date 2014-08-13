@@ -4,6 +4,8 @@ from __future__ import print_function
 
 from httpbar import HTTPPowerBar
 
+from barconfig import *
+
 
 class Button(object):
     def __init__(self, parent, cb=None):
@@ -26,9 +28,8 @@ class Button(object):
             self.cb(self)
 
 
-actions = {
-    '0': lambda _: '0',
-    '8': lambda _: '8'
+normal_actions = {
+    '0': lambda state: AUX_BAR[6].set_state(state),
 }
 
 
@@ -72,8 +73,11 @@ def bit_cb(self):
         if self == x:
             print('Found (%d): %s %s' % (idx, bool(x), x))
 
-            if self and not self.parent.usage:
+            if not self.parent.usage:
                 print('Normal action:', idx)
+                normal_func = normal_actions[str(idx)]
+                print('normal_func:', normal_func)
+                print('normal_func():', normal_func(bool(self)))
 
             break
 
@@ -91,10 +95,12 @@ class ButtonBoard(object):
 
 bb = ButtonBoard()
 
-bb.usage.set_state(True)
+bb.usage.set_state(False)
 
+#bb.bitswitches[0].set_state(False)
 bb.bitswitches[0].set_state(True)
-bb.next_byte.set_state(True)
-bb.bitswitches[0].set_state(False)
-bb.bitswitches[7].set_state(True)
-bb.energise.set_state(True)
+
+#bb.next_byte.set_state(True)
+#bb.bitswitches[0].set_state(False)
+#bb.bitswitches[7].set_state(True)
+#bb.energise.set_state(True)
