@@ -8,6 +8,7 @@ from barconfig import *
 
 
 class Button(object):
+
     def __init__(self, parent, cb=None):
         self.__state = False
         self.parent = parent
@@ -83,6 +84,7 @@ def bit_cb(self):
 
 
 class ButtonBoard(object):
+
     def __init__(self):
         self.bitswitches = [Button(self, bit_cb) for _ in range(8)]
         self.energise = Button(self, energise_cb)
@@ -97,10 +99,10 @@ bb = ButtonBoard()
 
 bb.usage.set_state(False)
 
-#bb.bitswitches[0].set_state(False)
+# bb.bitswitches[0].set_state(False)
 bb.bitswitches[0].set_state(True)
 
-#bb.next_byte.set_state(True)
-#bb.bitswitches[0].set_state(False)
-#bb.bitswitches[7].set_state(True)
-#bb.energise.set_state(True)
+# bb.next_byte.set_state(True)
+# bb.bitswitches[0].set_state(False)
+# bb.bitswitches[7].set_state(True)
+# bb.energise.set_state(True)
