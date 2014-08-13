@@ -2,9 +2,8 @@
 
 from __future__ import print_function
 
-from httpbar import HTTPPowerBar
-
-from barconfig import *
+# from barconfig import *
+# from httpbar import HTTPPowerBar
 
 
 class Button(object):
@@ -14,9 +13,11 @@ class Button(object):
         self.parent = parent
         self.cb = cb
 
+    # Since 3.x
     def __bool__(self):
         return self.state()
 
+    # Python 2.x support (equivalent of __bool__)
     def __nonzero__(self):
         return self.__bool__()
 
@@ -29,9 +30,17 @@ class Button(object):
             self.cb(self)
 
 
-normal_actions = {
-    '0': lambda state: AUX_BAR[6].set_state(state),
-}
+normal_actions = [
+    # lambda state: <bar>.<socket[number>].set_state(state)
+    lambda state: 'This is 0',
+    lambda state: 'This is 1',
+    lambda state: 'This is 2',
+    lambda state: 'This is 3',
+    lambda state: 'This is 4',
+    lambda state: 'This is 5',
+    lambda state: 'This is 6',
+    lambda state: 'This is 7',
+]
 
 
 def to_byte(b):
@@ -41,14 +50,14 @@ def to_byte(b):
 def energise_cb(self):
     if self:
         byte = self.parent.byte + to_byte(self.parent.bitswitches)
-        print('Bytes:', byte)
+
+        # Only in expert mode
         if self.parent.usage:
-            print('Expert mode: %d' % int(byte, 2))
+            print('Expert mode, action number: %d' % int(byte, 2))
 
             self.parent.byte = ""
-        else:
-            print('Normal mode; pass')
 
+        # Turn ourselves off again.
         self.set_state(False)
 
 
@@ -57,28 +66,34 @@ def status_cb(self):
 
 
 def usage_cb(self):
-    print('Usage callback')
+    print('Usage callback. Changed to:', bool(self))
+    self.parent.byte = ''
 
 
 def next_byte_cb(self):
+    # Only in export mode
     if not self.parent.usage:
         return
 
+    # Append to byte if state is 'On'
     if self:
         self.parent.byte += to_byte(self.parent.bitswitches)
         self.set_state(False)
 
 
 def bit_cb(self):
+    # Get our own index
     for idx, x in enumerate(self.parent.bitswitches):
         if self == x:
-            print('Found (%d): %s %s' % (idx, bool(x), x))
-
+            # Only in normal mode
             if not self.parent.usage:
-                print('Normal action:', idx)
-                normal_func = normal_actions[str(idx)]
-                print('normal_func:', normal_func)
-                print('normal_func():', normal_func(bool(self)))
+                normal_func = normal_actions[idx]
+                if normal_func:
+                    print('Normal mode, action number: %d -> %s' %
+                          (idx, normal_func(bool(self))))
+                else:
+                    print('Normal mode, action number: %d -> No function'
+                          % (idx))
 
             break
 
@@ -92,17 +107,31 @@ class ButtonBoard(object):
         self.status = Button(self, status_cb)
         self.usage = Button(self, usage_cb)
 
-        self.byte = ""
+        self.byte = ''
 
 
-bb = ButtonBoard()
+if __name__ == '__main__':
 
-bb.usage.set_state(False)
+    bb = ButtonBoard()
 
-# bb.bitswitches[0].set_state(False)
-bb.bitswitches[0].set_state(True)
+    # Normal mode.
+    bb.usage.set_state(False)
 
-# bb.next_byte.set_state(True)
-# bb.bitswitches[0].set_state(False)
-# bb.bitswitches[7].set_state(True)
-# bb.energise.set_state(True)
+    bb.bitswitches[4].set_state(True)
+
+    # Expert mode.
+    bb.usage.set_state(True)
+
+    bb.bitswitches[0].set_state(False)
+
+    # Get result
+    bb.energise.set_state(True)
+
+    # Store byte, start with next
+    bb.next_byte.set_state(True)
+
+    bb.bitswitches[0].set_state(True)
+    bb.bitswitches[7].set_state(True)
+
+    # Get result
+    bb.energise.set_state(True)
