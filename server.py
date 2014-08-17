@@ -131,6 +131,14 @@ def powerbar_iname(bar, port):
         if b.name == bar:
             return powerbar_i(idx, port)
 
+@app.route("/<bar>/<port>", methods=['GET', 'POST'])
+def powerbar_iname_pname(bar, port):
+    for idx, b in enumerate(bars):
+        if b.name == bar:
+            for socket in b.sockets:
+                if socket.name == port:
+                    return powerbar_i(idx, socket.num - 1)
+
 @app.route("/group/<group>", methods=['GET', 'POST'])
 def powerbar_g(group):
     if request.method == 'GET':
