@@ -70,7 +70,7 @@ FORM { DISPLAY:inline; }
 <tr> <td> Name </td> <td> On </td> <td> Off </td> <td> State </td></tr>
 
   <!-- filter(socketfilter, foo) filters everything that starts with 'Socket' -->
-  {% for socket in filter(socketfilter, bar.sockets.values()) %}
+  {% for socket in sort(filter(socketfilter, bar.sockets.values())) %}
 
   <tr>
   {{ onoff(URL + "/" + bar.name + "/" + (socket.name)|string, ("On", "Off"),

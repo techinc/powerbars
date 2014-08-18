@@ -84,7 +84,7 @@ GROUPS_LIGHT = ['general', 'makerlane', 'lightwest', 'tlwest', 'craft']
 
 presets = {
     'lightsoff' : {
-        'Off' : GROUPS_LIGHT,
+        'Off' : GROUPS_LIGHT + ['airfan'],
         'On' : [],
     },
     'lightson' : {

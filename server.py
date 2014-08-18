@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from flask import Flask, request, abort, render_template
 app = Flask(__name__)
-app.debug = False
+app.debug = True
 
 from barconfig import bars, groups, groups_state, presets
 
@@ -89,7 +89,9 @@ def print_state():
 def index():
     return render_template('main-nojs.html', bars=bars, groups=groups,
                            presets=presets, filter=filter,
-                           socketfilter=lambda x: not x.name.startswith('Socket'))
+                           sort=lambda y: sorted(y, key=lambda x: x.name),
+                           socketfilter=lambda x:
+                           not x.name.startswith('Socket'))
 
 
 @app.route("/alt")
@@ -120,13 +122,18 @@ def powerbar_iname_pname(bar, port):
                     hack_reset_bars()
                     socket.set_state(state)
 
-                    return render_template('main-nojs.html', bars=bars, groups=groups,
+                    return render_template('main-nojs.html', bars=bars,
+                                           groups=groups,
                                            presets=presets, filter=filter,
+                                           sort=lambda y: sorted(
+                                               y, key=lambda x: x.name),
                                            socketfilter=lambda x: not
                                            x.name.startswith('Socket'),
-                                           msg="Bar: %s, Port %s\n" % (bar, port))
+                                           msg="Bar: %s, Port %s\n" %
+                                           (bar, port))
 
-    raise Exception('Whoop') # TODO
+    raise Exception('Whoop')  # TODO
+
 
 @app.route("/group/<group>", methods=['GET', 'POST'])
 def powerbar_g(group):
@@ -151,6 +158,7 @@ def powerbar_g(group):
         #                       'On' if state else 'Off'))
         return render_template('main-nojs.html', bars=bars, groups=groups,
                                presets=presets, filter=filter,
+                               sort=lambda y: sorted(y, key=lambda x: x.name),
                                socketfilter=lambda x: not
                                x.name.startswith('Socket'),
                                msg='%s is %s' %
@@ -181,6 +189,7 @@ def powerbar_p(preset):
     #        msg='Prefix is %s' % preset)
     return render_template('main-nojs.html', bars=bars, groups=groups,
                            presets=presets, filter=filter,
+                           sort=lambda y: sorted(y, key=lambda x: x.name),
                            socketfilter=lambda x: not
                            x.name.startswith('Socket'),
                            msg='Prefix is %s' % preset)
