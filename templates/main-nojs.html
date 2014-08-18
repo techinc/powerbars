@@ -70,13 +70,10 @@ FORM { DISPLAY:inline; }
 <tr> <td> Name </td> <td> On </td> <td> Off </td> <td> State </td></tr>
 
   <!-- filter(socketfilter, foo) filters everything that starts with 'Socket' -->
-  {% for socket in filter(socketfilter, bar.sockets) %}
+  {% for socket in filter(socketfilter, bar.sockets.values()) %}
 
-  <!--
-  <p> {{ socket.name }} ({{ socket.num }}) </p>
-  -->
   <tr>
-  {{ onoff(URL + "/" + bar.name + "/" + (socket.num - 1)|string, ("On", "Off"),
+  {{ onoff(URL + "/" + bar.name + "/" + (socket.name)|string, ("On", "Off"),
   socket.name) }}
   <td> {{ socket.state }} </td>
   </tr>

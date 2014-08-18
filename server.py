@@ -13,10 +13,12 @@ import time
 
 hack_time = time.time() - 120.
 
-ALLOW_GET = False # True to allow GET requests
+ALLOW_GET = False  # True to allow GET requests
+
 
 class InputException(Exception):
     pass
+
 
 def get_state(request):
     if 'state' in request.form:
@@ -26,6 +28,7 @@ def get_state(request):
             return False
 
     raise InputException('')
+
 
 def group_set_state(group, socket, state):
     if state:
@@ -40,7 +43,7 @@ def group_set_state(group, socket, state):
 
 
 def flip_state(state_dict, key, state):
-    if state_dict[key] == None:
+    if state_dict[key] is None:
         state_dict[key] = state
         return True
 
@@ -69,12 +72,11 @@ def hack_reset_bars():
                 bar.reset_bar()
 
 
-
 def print_state():
     s = ""
     for bar in bars:
-        for socket in bar.sockets:
-            s += '%d is at count: %s\n' % (socket.num, str(socket.refcount))
+        for socket in bar.sockets.values():
+            s += '%d is at count: %s\n' % (socket.name, str(socket.refcount))
 
     for k, v in groups_state.iteritems():
         s += '%s: %s\n' % (k, str(v))
@@ -86,12 +88,14 @@ def print_state():
 @app.route("/")
 def index():
     return render_template('main-nojs.html', bars=bars, groups=groups,
-            presets=presets, filter=filter,
-            socketfilter=lambda x: not x.name.startswith('Socket'))
+                           presets=presets, filter=filter,
+                           socketfilter=lambda x: not x.name.startswith('Socket'))
+
 
 @app.route("/alt")
 def alt():
     return render_template('alt.html')
+
 
 @app.route('/all', methods=['GET'])
 def all():
@@ -99,37 +103,30 @@ def all():
     if request.method == 'GET':
         for bar in xrange(len(bars)):
             states = []
-            for socket in bars[bar].sockets:
+            for socket in bars[bar].sockets.values():
                 states.append((str(socket), str(socket.state)))
             b[bar] = states
         return json.dumps(b)
 
-@app.route("/<int:bar>/<int:port>", methods=['GET', 'POST'])
-def powerbar_i(bar, port):
-    # TODO: Disable this in general
-    if request.method == 'GET':
-        return json.dumps({str(bars[bar].sockets[port]) :
-                str(bars[bar].sockets[port].state)})
-    else:
-        state = get_state(request)
 
-        hack_reset_bars()
-
-        # XXX: Check if bar is valid and return 404 if not
-        bars[bar].sockets[port].set_state(state)
-
-#        return render_template('status_back.html', msg = "Bar: %d, Port %d\n" % (bar, port))
-        return render_template('main-nojs.html', bars=bars, groups=groups,
-                                presets=presets, filter=filter,
-                                socketfilter=lambda x: not
-                                x.name.startswith('Socket'),
-                                msg = "Bar: %d, Port %d\n" % (bar, port))
-
-@app.route("/<bar>/<int:port>", methods=['GET', 'POST'])
-def powerbar_iname(bar, port):
+@app.route("/<bar>/<port>", methods=['GET', 'POST'])
+def powerbar_iname_pname(bar, port):
     for idx, b in enumerate(bars):
         if b.name == bar:
-            return powerbar_i(idx, port)
+            for socket in b.sockets.values():
+                if socket.name == port:
+                    state = get_state(request)
+
+                    hack_reset_bars()
+                    socket.set_state(state)
+
+                    return render_template('main-nojs.html', bars=bars, groups=groups,
+                                           presets=presets, filter=filter,
+                                           socketfilter=lambda x: not
+                                           x.name.startswith('Socket'),
+                                           msg="Bar: %s, Port %s\n" % (bar, port))
+
+    raise Exception('Whoop') # TODO
 
 @app.route("/group/<group>", methods=['GET', 'POST'])
 def powerbar_g(group):
@@ -142,7 +139,7 @@ def powerbar_g(group):
         state = get_state(request)
 
         if group not in groups:
-            return 'Invalid group' # TODO: Error code
+            return 'Invalid group'  # TODO: Error code
 
         hack_reset_bars()
 
@@ -150,24 +147,24 @@ def powerbar_g(group):
             for socket in groups[group]:
                 group_set_state(group, socket, state)
 
-        #return render_template('status_back.html', msg='%s is %s' % (group,
+        # return render_template('status_back.html', msg='%s is %s' % (group,
         #                       'On' if state else 'Off'))
         return render_template('main-nojs.html', bars=bars, groups=groups,
-                                presets=presets, filter=filter,
-                                socketfilter=lambda x: not
-                                x.name.startswith('Socket'),
-                                msg='%s is %s' %
-                                (group, 'On' if state else 'Off'))
+                               presets=presets, filter=filter,
+                               socketfilter=lambda x: not
+                               x.name.startswith('Socket'),
+                               msg='%s is %s' %
+                               (group, 'On' if state else 'Off'))
 
 
-@app.route("/preset/<preset>", methods=['GET','POST'])
+@app.route("/preset/<preset>", methods=['GET', 'POST'])
 def powerbar_p(preset):
-    #if request.method == 'GET':
+    # if request.method == 'GET':
     #    pass
-    #else:
+    # else:
 
     if preset not in presets:
-        return 'Invalid preset' # TODO: Error code
+        return 'Invalid preset'  # TODO: Error code
 
     hack_reset_bars()
 
@@ -178,20 +175,21 @@ def powerbar_p(preset):
                 for socket in groups[group]:
                     group_set_state(group, socket, state)
 
-    #print_state()
+    # print_state()
 
-    #return render_template('status_back.html',
+    # return render_template('status_back.html',
     #        msg='Prefix is %s' % preset)
     return render_template('main-nojs.html', bars=bars, groups=groups,
-                            presets=presets, filter=filter,
-                            socketfilter=lambda x: not
-                            x.name.startswith('Socket'),
-                            msg='Prefix is %s' % preset)
+                           presets=presets, filter=filter,
+                           socketfilter=lambda x: not
+                           x.name.startswith('Socket'),
+                           msg='Prefix is %s' % preset)
+
 
 from reset import resetserial
 RESET = True
 
-from bar import PowerBar
+from bar import BayTechPowerBar
 
 if __name__ == "__main__":
     if RESET:
@@ -199,10 +197,10 @@ if __name__ == "__main__":
             # XXX: reset_bar here makes sure we've read everything from the bar
             # so it doesn't return bogus on the next read.
             # resetserial() actually resets certain configs in the bar
-            if isinstance(bar, PowerBar):
+            if isinstance(bar, BayTechPowerBar):
                 bar.reset_bar()
                 print('Resetting:', bar.s.port)
                 resetserial(bar.s.port)
 
-    app.run(host='::')
-    #app.run(host='0.0.0.0')
+    app.run(host='::', port=5000)
+    # app.run(host='0.0.0.0')

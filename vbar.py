@@ -2,28 +2,27 @@
 
 from __future__ import print_function
 
+
 class VirtualPowerBar(object):
+
     def __init__(self, name):
         self.name = name
 
-    def __len__(self):
-        return len(self.sockets)
+        self.sockets = {}
 
-    def __getitem__(self, index):
-        return self.sockets[index - 1]
+    def make_socket(self, name, ident):
+        """
+        This function is used to create PowerSocket instances in barconfig
+        """
+        raise NotImplementedException('make_socket')
 
-    def __iter__(self):
-        return iter(self.sockets)
 
 class VirtualPowerSocket(object):
-    def __init__(self, bar, num, name=None):
-        """
-        Name is purely for descriptive purposes
-        """
-        self.bar = bar
-        self.num = num + 1
-        self.name = 'Socket %d' % self.num if not name else name
 
+    def __init__(self, bar, name, ident):
+        self.bar = bar
+        self.name = name
+        self.ident = ident
         self.state = None
 
         self.refcount = []

@@ -14,6 +14,7 @@ Groups can be turned on or off as a whole. Finally, there will be presets,
 which consist of a two sets of groups, one set that needs to be turned off,
 one that needs to be turned on.
 
+
 === Bars ===
 
 Each powerbar has a number of sockets.
@@ -55,13 +56,11 @@ a BAR and SOCKET are number, a group and a preset are strings
 
     curl -d state=$STATE http://$MLP_HOST:$MLP_PORT/$BAR/$SOCKET
 
-Concrete:
+Concere:
 
-    curl -d state=Off http://$MLP_HOST:$MLP_PORT/0/3
+    curl -d state=Off http://$MLP_HOST:$MLP_PORT/AUX/W_LIGHT_TABLE
 
-Bars can also be addressed by name:
 
-    curl -d state=Off http://$MLP_HOST:$MLP_PORT/AUX/3
 
 === Groups ===
 
