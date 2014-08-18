@@ -1,7 +1,6 @@
 from wtibar import WTIPowerBar
 
-# This is the 'aux' config for TechInc (http://techinc.nl)
-# The config for the 'main' room can be found in configs/techinc-main.py
+# This is the WTI config for Wizzup's home (http://wizzup.org)
 
 bars = []
 

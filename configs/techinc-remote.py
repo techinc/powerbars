@@ -5,8 +5,8 @@ from __future__ import print_function
 from bar import PowerBar
 from httpbar import HTTPPowerBar
 
-# This is the main config for TechInc (http://techinc.nl)
-# The config for the other bar can be found in configs/techinc-west.py
+# This is the remote config for TechInc (http://techinc.nl)
+# The config for the main and aux bar can be found in configs/techinc-*.py
 
 bars = []
 
