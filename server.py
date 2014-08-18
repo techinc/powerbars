@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from flask import Flask, request, abort, render_template
 app = Flask(__name__)
-app.debug = True
+app.debug = False
 
 from barconfig import bars, groups, groups_state, presets
 

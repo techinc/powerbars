@@ -10,7 +10,7 @@ from httpbar import HTTPPowerBar
 
 bars = []
 
-FIRST_BAR = BayTechPowerBar(host='/dev/ttyS0', name='MLP')
+FIRST_BAR = BayTechPowerBar('/dev/ttyS0', name='MLP')
 AUX_BAR = HTTPPowerBar(host='http://10.0.20.41:5000', name='AUX')
 
 bars += [
