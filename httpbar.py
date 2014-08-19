@@ -10,9 +10,11 @@ TIMEOUT = 5.  # Quite high; but this is a lot more stable.
 
 class HTTPPowerBar(VirtualPowerBar):
 
-    def __init__(self, host='http://powerbar.ti', name='HTTPPowerBar'):
+    def __init__(self, host='http://powerbar.ti', name='HTTPPowerBar',
+            timeout=TIMEOUT):
         VirtualPowerBar.__init__(self, name)
         self.host = host
+        self.timeout = timeout
 
     def make_socket(self, name, ident):
         return HTTPPowerSocket(self, name, ident)
@@ -28,7 +30,7 @@ class HTTPPowerSocket(VirtualPowerSocket):
 
         r = requests.post('%s/%s/%s' % (self.bar.host, self.bar.name,
                                         self.ident),
-                          data={'state': s}, timeout=TIMEOUT)
+                          data={'state': s}, timeout=self.bar.timeout)
 
         if r.status_code == 200:
             self.state = state

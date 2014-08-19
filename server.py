@@ -131,8 +131,7 @@ def powerbar_iname_pname(bar, port):
                                            x.name.startswith('Socket'),
                                            msg="Bar: %s, Port %s\n" %
                                            (bar, port))
-
-    raise Exception('Whoop')  # TODO
+    return "No such bar plus port"
 
 
 @app.route("/group/<group>", methods=['GET', 'POST'])

@@ -2,7 +2,6 @@
 
 from __future__ import print_function
 
-from bar import PowerBar
 from httpbar import HTTPPowerBar
 
 # This is the remote config for TechInc (http://techinc.nl)
@@ -10,12 +9,12 @@ from httpbar import HTTPPowerBar
 
 bars = []
 
-FIRST_BAR = HTTPPowerBar(host='http://10.0.20.17:5000', name='MLP')
-AUX_BAR = HTTPPowerBar(host='http://10.0.20.41:5000', name='AUX')
+FIRST_BAR = HTTPPowerBar(host='http://powerbar.ti:5000/', name='MLP', timeout=15)
+AUX_BAR = HTTPPowerBar(host='http://powerbar.ti:5000/', name='AUX', timeout=15)
 
 bars += [
     FIRST_BAR,
-    AUX_BAR
+    AUX_BAR,
 ]
 
 def make_bar(bar, name, ident=None):
