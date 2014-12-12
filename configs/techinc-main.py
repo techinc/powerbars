@@ -99,15 +99,15 @@ presets = {
     },
     'mainspaceon' : {
         'Off' : [],
-        'On' : ['general'] + ['craft'] + ['audio'] + ['makerlane'] + ['av'] + ['audio'],      
+        'On' : ['general','craft','audio','makerlane','av','audio'],      
     },
     'auxspaceon' : {
         'Off' : [],
-        'On' : ['soldering'] + ['powerwest'] + ['lightwest'],
+        'On' : ['soldering','powerwest','lightwest'],
     },
     'social' : {
         'Off' : [],
-        'On' : ['general'] + ['craft'] + ['airfan'] + ['audio'] + ['lightwest'] + ['displays'] + ['av'] + ['audio'] +['soldering'] + ['powerwest'] + ['makerlane'] ,
+        'On' : ['general','craft','airfan','audio','lightwest','displays','av','audio','soldering','powerwest','makerlane'],
     },
     'presentation' : {
         'Off' : GROUP_LIGHTS + ['airfan'],
